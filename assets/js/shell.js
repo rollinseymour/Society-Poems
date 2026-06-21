@@ -93,10 +93,7 @@
     { href: "profile", label: "Profile", page: "profile", auth: "user" },
   ];
 
-  var brandSVG =
-    '<svg class="brand-mark" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
-    '<path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v16H5.5A2.5 2.5 0 0 0 3 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>' +
-    '<path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H13v16h5.5A2.5 2.5 0 0 1 21 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+  var brandSVG = '<span class="brand-logo" aria-hidden="true"></span>';
 
   function navItems(active) {
     return NAV.map(function (n) {

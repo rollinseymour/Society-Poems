@@ -321,6 +321,20 @@ main {
 .brand-mark {
   color: var(--primary);
 }
+/* The site logo (waveform) used as a themeable mask so it inherits brand color
+   and adapts to light/dark automatically. Source: /Images/Untitled.png */
+.brand-logo {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  background-color: var(--primary);
+  -webkit-mask: url("/Images/Untitled.png") center / contain no-repeat;
+  mask: url("/Images/Untitled.png") center / contain no-repeat;
+}
+.footer-brand .brand-logo { width: 26px; height: 26px; }
+.auth-brand .brand-logo { width: 34px; height: 34px; background-color: #fff; }
+.auth-card .card-brand .brand-logo { width: 26px; height: 26px; }
 .brand-tagline {
   font-size: 0.72rem;
   letter-spacing: 0.12em;
