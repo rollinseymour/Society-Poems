@@ -1,142 +1,317 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Society Poems</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="/Images/Untitled1.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Society Poems · Society's Stories — share your story, find support</title>
+  <meta name="description" content="Society Poems is a warm, global peer-support community for sharing the stories of your life — and finding people who understand. Write openly, anonymously or named." />
+  <link rel="icon" href="/Images/Untitled1.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+
+  <!-- Set theme before paint to avoid a flash -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("sp-theme");
+        if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
 </head>
-<body data-theme="night" style="visibility: hidden;">
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <header>
-        <nav class="navbar">
-            <a href="https://societypoems.com/" class="nav-logo">📖 Society Poems</a>
-            <button id="menu-open-button" class="fas fa-bars"></button>
-            <ul class="nav-menu">
-                <button id="menu-close-button" class="fas fa-times"></button>
-                <li><a href="/" class="nav-link active">Home</a></li>
-                <li><a href="read" class="nav-link">Read</a></li>
-                <li><a href="upload" class="nav-link">Upload</a></li>
-                <li><a href="livechat" class="nav-link">Live Chat</a></li>
-                <li><a href="feedback" class="nav-link">Feedback</a></li>
-                <li><a href="profile" class="nav-link">Profile</a></li>
-            </ul>
-        </nav>
-    </header>
+  <!-- ============ Header ============ -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="brand" aria-label="Society Poems home">
+        <span class="brand-name">
+          <svg class="brand-mark" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v16H5.5A2.5 2.5 0 0 0 3 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H13v16h5.5A2.5 2.5 0 0 1 21 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+          Society Poems
+        </span>
+        <span class="brand-tagline">Society's Stories</span>
+      </a>
 
-    <main>
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="section-title">A new space for you to read and write.</h1>
-                <p>Every post tells a story. Share yours.</p>
-                <div class="hero-buttons">
-                    <a href="read" class="button read-here">READ</a>
-                    <a href="upload" class="button upload-here">UPLOAD</a>
-                </div>
-            </div>
-        </section>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="active">Home</a></li>
+        <li><a href="read">Read</a></li>
+        <li><a href="upload">Share</a></li>
+        <li><a href="livechat">Live Circles</a></li>
+        <li><a href="#values">About</a></li>
+        <li class="nav-mobile-cta" style="margin-top:1rem;"><a href="login" class="btn btn-primary btn-block">Sign in</a></li>
+      </ul>
 
-        <section id="about" class="section-content" style="padding: 40px 0;">
-            <h2 class="section-title">About</h2>
-            <p style="text-align:center; max-width: 700px; margin: auto; line-height: 1.6;">
-                Society Poems is a website dedicated to sharing the raw, authentic word from your soul. Speak your mind. Upload to share with others. Choose to be anonymous, or named.
-            </p>
-        </section>
+      <div class="nav-actions">
+        <a href="login" class="btn btn-ghost btn-sm nav-desktop-cta">Sign in</a>
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch to dark mode">
+          <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M12 2.5v2.4M12 19.1v2.4M21.5 12h-2.4M4.9 12H2.5M18.7 5.3l-1.7 1.7M7 17l-1.7 1.7M18.7 18.7 17 17M7 7 5.3 5.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 14.4A8 8 0 1 1 9.6 4a6.4 6.4 0 0 0 10.4 10.4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button id="nav-toggle" class="icon-btn nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="nav-backdrop" id="nav-backdrop"></div>
 
-        <section class="read-section section-content" style="padding: 40px 0;">
-            <h2 class="section-title">Note from the Author</h2>
-            <p style="text-align:center;">
-                Thank you for visiting Society Poems. As I continue to work on this project, I'd love to <a href="feedback" style="color: var(--primary-color);">receive your feedback!</a>
-            </p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Society Poems</p>
-        <div class="footer-links">
-            <a href="privacy-policy">Privacy Policy</a>
-            <span>|</span>
-            <a href="tos">Terms of Service</a>
+  <main id="main">
+    <!-- ============ Hero ============ -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">A safe place to be heard</span>
+          <h1 class="display">Your story matters.<br />Share it here.</h1>
+          <p class="lead">
+            Society Poems is a warm, global community for sharing the stories of your
+            life — the heavy ones and the hopeful ones — and finding support from
+            people who truly understand. Write anonymously or as yourself. You never
+            have to carry it alone.
+          </p>
+          <div class="hero-cta">
+            <a href="upload" class="btn btn-primary btn-lg">
+              Share your story
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="read" class="btn btn-ghost btn-lg">Read stories</a>
+          </div>
+          <div class="hero-trust">
+            <span class="avatars" aria-hidden="true">
+              <span style="background:#c2693e">M</span>
+              <span style="background:#6e8e6a">J</span>
+              <span style="background:#9a6b8e">A</span>
+              <span style="background:#5f7d9a">S</span>
+            </span>
+            <span>Join a community sharing, listening, and supporting one another every day.</span>
+          </div>
         </div>
-    </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+        <div class="hero-visual" aria-hidden="true">
+          <article class="float-card one">
+            <span class="topic-badge">Healing</span>
+            <p>“The day it finally got a little lighter, I almost didn't notice. Then I did.”</p>
+            <div class="fc-foot"><span class="avatar" style="width:26px;height:26px;font-size:.7rem;">A</span> Anonymous · 2h</div>
+          </article>
+          <article class="float-card two">
+            <span class="topic-badge sage">Gratitude</span>
+            <p>“A letter to my younger self: you make it through. I promise you make it through.”</p>
+            <div class="fc-foot">
+              <span class="reactions">
+                <span class="rx">❤ 124</span><span class="rx">🤝 58</span>
+              </span>
+            </div>
+          </article>
+          <article class="float-card three">
+            <span class="topic-badge">New beginnings</span>
+            <p>“Starting over at 40. Scared, but writing it down helps.”</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // TODO: Replace with your project's actual Firebase configuration.
-            const firebaseConfig = {
-                apiKey: "AIzaSyDHXEMtVPn46b2qS1CPGUIEuQ8ntLyvLVM",
-                authDomain: "society-poems-97f4d.firebaseapp.com",
-                databaseURL: "https://society-poems-97f4d-default-rtdb.firebaseio.com",
-                projectId: "society-poems-97f4d",
-                storageBucket: "society-poems-97f4d.firebasestorage.app",
-                messagingSenderId: "723670230106",
-                appId: "1:723670230106:web:6d6dda4f8c46626c55a463"
-            };
+    <!-- ============ Value cards ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2 class="section-title">A place to share, be heard, and heal</h2>
+          <p class="lead">Three simple things, built around kindness.</p>
+        </div>
+        <div class="grid-3">
+          <article class="value-card">
+            <span class="value-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v7A2.5 2.5 0 0 1 17.5 17H9l-4 4v-4H6.5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                <path d="M8.5 9.5h7M8.5 12.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3>Share freely</h3>
+            <p>Write what's on your heart — a poem, a memory, a hard day, a small win. Post anonymously or as yourself. Your pace, your words.</p>
+          </article>
+          <article class="value-card">
+            <span class="value-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 20.5s-7-4.3-9.2-9C1.3 8.6 2.7 5.5 5.8 5.1c2-.3 3.6.9 4.2 2.2.6-1.3 2.2-2.5 4.2-2.2 3.1.4 4.5 3.5 3 6.4-2.2 4.7-9.2 9-9.2 9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <h3>Be heard</h3>
+            <p>Real people respond with encouragement, comfort, and "me too." Every story is met with kindness — no judgment, ever.</p>
+          </article>
+          <article class="value-card">
+            <span class="value-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="9" cy="8.5" r="3" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M3.5 19c.5-3 2.8-4.5 5.5-4.5s5 1.5 5.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                <path d="M16 6a3 3 0 0 1 0 5.5M17 14.6c2.2.4 3.9 1.8 4.3 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3>Find support</h3>
+            <p>Join Live Circles — gentle, real-time rooms to talk things through with others who get it. Come for ten minutes or stay a while.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-            // Initialize Firebase
-            const app = firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.database();
+    <!-- ============ Values / safe-space band ============ -->
+    <section class="values-band section" id="values">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Our promise</span>
+          <h2 class="section-title">A space built on kindness</h2>
+          <p class="lead">Society Poems is peer support — people helping people. To keep it safe, everyone here agrees to a few simple things.</p>
+        </div>
+        <div class="values-list">
+          <div class="value-norm">
+            <span class="check"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div><h4>Listen without judging</h4><p>Every person and every story is welcome here.</p></div>
+          </div>
+          <div class="value-norm">
+            <span class="check"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div><h4>Support, don't fix</h4><p>Sometimes "I hear you" is the most powerful thing to say.</p></div>
+          </div>
+          <div class="value-norm">
+            <span class="check"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div><h4>Protect each other's privacy</h4><p>What's shared here stays here. Anonymity is always respected.</p></div>
+          </div>
+          <div class="value-norm">
+            <span class="check"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div><h4>You belong here</h4><p>Wherever you are in the world, there's a place for you.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            // --- Shared Logic ---
-            const setupMobileMenu = () => {
-                const openBtn = document.getElementById('menu-open-button');
-                const closeBtn = document.getElementById('menu-close-button');
-                const navMenu = document.querySelector('.nav-menu');
-                if (openBtn && closeBtn && navMenu) {
-                    openBtn.addEventListener('click', () => navMenu.classList.add('active'));
-                    closeBtn.addEventListener('click', () => navMenu.classList.remove('active'));
-                }
-            };
+    <!-- ============ Recent stories preview ============ -->
+    <!-- NOTE: sample content for the redesign preview — will be wired to live posts during rollout. -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">From the community</span>
+          <h2 class="section-title">Recent stories</h2>
+          <p class="lead">A glimpse of what people are sharing right now.</p>
+        </div>
+        <div class="grid-3">
+          <a href="read" class="story-card">
+            <span class="topic-badge">Healing</span>
+            <h3>The slow climb back to myself</h3>
+            <p class="excerpt">For a long time I didn't recognize the person in the mirror. Writing here, one small entry at a time, is how I'm finding my way back…</p>
+            <div class="story-foot">
+              <span class="author"><span class="avatar">R</span> riverlight</span>
+              <span class="reactions"><span class="rx">❤ 86</span><span class="rx">🤝 41</span></span>
+            </div>
+          </a>
+          <a href="read" class="story-card">
+            <span class="topic-badge sage">Gratitude</span>
+            <h3>Small things keeping me going</h3>
+            <p class="excerpt">Morning coffee. A text from an old friend. The dog at my feet. I'm learning to count them out loud, because some days they're all I have…</p>
+            <div class="story-foot">
+              <span class="author"><span class="avatar">A</span> Anonymous</span>
+              <span class="reactions"><span class="rx">❤ 152</span><span class="rx">🤝 73</span></span>
+            </div>
+          </a>
+          <a href="read" class="story-card">
+            <span class="topic-badge">New beginnings</span>
+            <h3>Leaving, and learning to breathe</h3>
+            <p class="excerpt">It took me three years to walk out that door. I'm writing this from a tiny apartment that's entirely, finally, mine…</p>
+            <div class="story-foot">
+              <span class="author"><span class="avatar">M</span> mara_k</span>
+              <span class="reactions"><span class="rx">❤ 209</span><span class="rx">🤝 118</span></span>
+            </div>
+          </a>
+        </div>
+        <div class="text-center" style="margin-top:2.5rem;">
+          <a href="read" class="btn btn-soft btn-lg">Read more stories</a>
+        </div>
+      </div>
+    </section>
 
-            const handleLogout = () => {
-                const logoutBtn = document.getElementById('logoutBtn');
-                if (logoutBtn) {
-                    logoutBtn.addEventListener('click', () => {
-                        auth.signOut().catch(error => console.error('Sign out error', error));
-                    });
-                }
-            };
+    <!-- ============ Resources / safety strip ============ -->
+    <section class="resources-strip">
+      <div class="container inner">
+        <span class="heart" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 20.5s-7-4.3-9.2-9C1.3 8.6 2.7 5.5 5.8 5.1c2-.3 3.6.9 4.2 2.2.6-1.3 2.2-2.5 4.2-2.2 3.1.4 4.5 3.5 3 6.4-2.2 4.7-9.2 9-9.2 9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </span>
+        <p><strong>Going through something heavy right now?</strong> You're not alone, and support is available.</p>
+        <a href="resources" class="btn btn-ghost btn-sm">Find support resources</a>
+      </div>
+    </section>
 
-            const checkAuthState = () => {
-                auth.onAuthStateChanged(user => {
-                    const isAuthPage = window.location.pathname.includes('login');
-                    if (!user && !isAuthPage) {
-                        // Not logged in and not on an auth page, send to login.
-                        window.location.href = 'login';
-                    } else if (user && isAuthPage) {
-                        // Logged in but on an auth page, redirect away.
-                        window.location.href = 'index';
-                    } else if (user) {
-                        // --- !! NEW SECURITY CHECK !! ---
-                        // User is logged in, now verify they have a username.
-                        const userRef = db.ref('users/' + user.uid);
-                        userRef.once('value', (snapshot) => {
-                            if (snapshot.exists() && snapshot.val().username) {
-                                // Username exists, show the page content.
-                                document.body.style.visibility = 'visible';
-                            } else {
-                                // No username! Force back to login to complete profile.
-                                window.location.href = 'login';
-                            }
-                        });
-                    } else {
-                        // Failsafe for non-logged-in users on non-auth pages.
-                         document.body.style.visibility = 'visible';
-                    }
-                });
-            };
+    <!-- ============ CTA band ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-band">
+          <span class="eyebrow">Ready when you are</span>
+          <h2>Some things are easier to say in writing.</h2>
+          <p class="lead">Start with a sentence. Start anonymously. Just start — the community is here to listen.</p>
+          <div class="hero-cta">
+            <a href="upload" class="btn btn-primary btn-lg">Share your story</a>
+            <a href="login" class="btn btn-ghost btn-lg">Create a free account</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-            // Initialize page functions
-            setupMobileMenu();
-            handleLogout();
-            checkAuthState();
-        });
-    </script>
+  <!-- ============ Footer ============ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="brand-name">
+            <svg class="brand-mark" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v16H5.5A2.5 2.5 0 0 0 3 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H13v16h5.5A2.5 2.5 0 0 1 21 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+            Society Poems
+          </span>
+          <p>A warm, global space to share the stories of your life and find support from people who understand. Society's Stories — written by all of us.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="read">Read stories</a>
+          <a href="upload">Share yours</a>
+          <a href="livechat">Live Circles</a>
+          <a href="#values">Our values</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="resources">Get help now</a>
+          <a href="feedback">Send feedback</a>
+          <a href="login">Sign in</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="privacy-policy">Privacy Policy</a>
+          <a href="tos">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Society Poems · Society's Stories</span>
+        <span>Made with care for people sharing their stories.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/theme.js"></script>
 </body>
 </html>
