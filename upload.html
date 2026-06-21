@@ -1,441 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload - Society Poems</title>
-    <link rel="icon" href="/Images/Untitled1.png">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Share your story · Society Poems</title>
+  <link rel="icon" href="/Images/Untitled1.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <script>
+    (function () { try { var t = localStorage.getItem("sp-theme"); if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.setAttribute("data-theme", t); } catch (e) {} })();
+  </script>
 </head>
-<body data-theme="night" style="visibility: hidden;">
+<body data-page="upload" class="protected">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
 
-    <header>
-        <nav class="navbar">
-            <a href="/" class="nav-logo">📖 Society Poems</a>
-            <button id="menu-open-button" class="fas fa-bars"></button>
-            <ul class="nav-menu">
-                <button id="menu-close-button" class="fas fa-times"></button>
-                <li><a href="/" class="nav-link">Home</a></li>
-                <li><a href="read" class="nav-link">Read</a></li>
-                <li><a href="upload" class="nav-link active">Upload</a></li>
-                <li><a href="livechat" class="nav-link">Live Chat</a></li>
-                <li><a href="feedback" class="nav-link">Feedback</a></li>
-                <li><a href="profile" class="nav-link">Profile</a></li>
-            </ul>
-        </nav>
-    </header>
+  <main id="main" class="section">
+    <div class="container" style="max-width:720px;">
+      <div class="page-head">
+        <span class="eyebrow">Your words, your pace</span>
+        <h1>Share your story</h1>
+        <p class="lead">A poem, a memory, a hard day, a small win — whatever's on your heart. The community is here to listen, with kindness.</p>
+      </div>
 
-    <main>
-        <div class="form-container" style="margin: auto;">
-            <h1>Upload</h1>
-            <div id="message-container"></div>
-            <form id="uploadForm">
-                <p style="text-align: center; margin-bottom: 20px;">Posting as: <strong id="author-name">Loading...</strong></p>
+      <div id="share-msg" class="msg-box"></div>
 
-                <label for="topic-selection">Topic:</label>
-                <div class="topic-selection-container">
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="topicType" value="existing" id="existing-topic-radio" checked>
-                            Choose existing topic
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="topicType" value="custom" id="custom-topic-radio">
-                            Create new topic
-                        </label>
-                    </div>
-                    
-                    <div id="existing-topic-container" class="topic-input-container">
-                        <select id="existing-topic" required>
-                            <option value="" disabled selected>-- Select a Topic --</option>
-                            <option value="Poetry">Poetry</option>
-                            <option value="Prose">Prose</option>
-                            <option value="Freeform">Freeform</option>
-                            <option value="Short Story">Short Story</option>
-                            <option value="Musings">Musings</option>
-                        </select>
-                    </div>
-                    
-                    <div id="custom-topic-container" class="topic-input-container" style="display: none;">
-                        <input type="text" id="custom-topic" placeholder="Enter your topic name..." maxlength="50">
-                        <small class="input-help">Topic names should only contain letters and numbers (no spaces or special characters)</small>
-                    </div>
-                </div>
-                
-                <!-- <label for="content"></label> -->
-                <textarea id="content" rows="10" placeholder="Let your soul speak..." required></textarea>
-                <button type="submit" id="submit-btn" class="form-button form-button-primary" disabled>Submit</button>
-            </form>
+      <form class="form-card" id="share-form" novalidate>
+        <div class="field">
+          <label>Posting as</label>
+          <div class="input-row" style="justify-content:space-between;">
+            <span id="posting-as" style="display:inline-flex;align-items:center;gap:.6rem;font-weight:600;">
+              <span class="avatar" id="me-avatar" style="width:36px;height:36px;font-size:.8rem;">?</span>
+              <span id="me-name">…</span>
+            </span>
+            <label style="display:inline-flex;align-items:center;gap:.5rem;font-weight:500;cursor:pointer;margin:0;">
+              <input type="checkbox" id="anon" style="accent-color:var(--primary);" /> Post anonymously
+            </label>
+          </div>
+          <p class="field-help" id="anon-note" hidden>You'll appear as <strong>Anonymous</strong>. Your account still owns the post so you can edit or delete it.</p>
         </div>
-    </main>
 
-    <footer>
-        <p>&copy; 2025 Society Poems</p>
-        <div class="footer-links">
-            <a href="privacy-policy">Privacy Policy</a>
-            <span>|</span>
-            <a href="tos">Terms of Service</a>
+        <div class="field">
+          <label for="topic-select">Topic</label>
+          <select class="input" id="topic-select">
+            <option value="" disabled selected>Choose a topic…</option>
+            <option value="__new__">➕ Start a new topic</option>
+          </select>
+          <input class="input" id="topic-new" placeholder="Name your topic (e.g. Healing, Gratitude)" style="margin-top:.6rem;" hidden />
+          <p class="field-help">Topics help others find stories like yours. Letters and numbers work best.</p>
         </div>
-    </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+        <div class="field">
+          <label for="content">Your story</label>
+          <textarea class="input" id="content" rows="9" placeholder="Start with a sentence. There's no wrong way to do this." required></textarea>
+        </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
+        <div class="field">
+          <label style="display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;font-weight:500;">
+            <input type="checkbox" id="cw-toggle" style="accent-color:var(--primary);" /> Add a content warning
+          </label>
+          <input class="input" id="cw-text" placeholder="e.g. Mentions of grief, self-harm…" maxlength="60" style="margin-top:.6rem;" hidden />
+          <p class="field-help warn" id="cw-note" hidden>Readers will see this warning and can choose to reveal your story. Thank you for looking out for the community. 💛</p>
+        </div>
 
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyDHXEMtVPn46b2qS1CPGUIEuQ8ntLyvLVM",
-            authDomain: "society-poems-97f4d.firebaseapp.com",
-            databaseURL: "https://society-poems-97f4d-default-rtdb.firebaseio.com",
-            projectId: "society-poems-97f4d",
-            storageBucket: "society-poems-97f4d.firebasestorage.app",
-            messagingSenderId: "723670230106",
-            appId: "1:723670230106:web:6d6dda4f8c46626c55a463",
-            measurementId: "G-EMPTKV652X"
-        };
+        <button type="submit" id="share-btn" class="btn btn-primary btn-lg btn-block">Share your story</button>
+        <p class="field-help text-center" style="margin-top:1rem;">By sharing you agree to our <a href="tos">community guidelines</a>. Be kind — to others and to yourself.</p>
+      </form>
+    </div>
+  </main>
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-    </script>
+  <div id="site-footer"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // TODO: Replace with your Firebase config.
-            const firebaseConfig = {
-                apiKey: "AIzaSyDHXEMtVPn46b2qS1CPGUIEuQ8ntLyvLVM",
-                authDomain: "society-poems-97f4d.firebaseapp.com",
-                databaseURL: "https://society-poems-97f4d-default-rtdb.firebaseio.com",
-                projectId: "society-poems-97f4d",
-                storageBucket: "society-poems-97f4d.firebasestorage.app",
-                messagingSenderId: "723670230106",
-                appId: "1:723670230106:web:6d6dda4f8c46626c55a463"
-            };
-
-            
-            const app = firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.database();
-            let currentUsername = null; // Variable to hold the fetched username
-            
-            // --- Shared Logic ---
-             const setupMobileMenu_impl = () => {
-                const openBtn = document.getElementById('menu-open-button');
-                const closeBtn = document.getElementById('menu-close-button');
-                const navMenu = document.querySelector('.nav-menu');
-                if (openBtn && closeBtn && navMenu) {
-                    openBtn.addEventListener('click', () => navMenu.classList.add('active'));
-                    closeBtn.addEventListener('click', () => navMenu.classList.remove('active'));
-                }
-            };
-
-            const handleLogout_impl = () => {
-                const logoutBtn = document.getElementById('logoutBtn');
-                if (logoutBtn) {
-                    logoutBtn.addEventListener('click', () => {
-                        auth.signOut().catch(error => console.error('Sign out error', error));
-                    });
-                }
-            };
-            
-            const checkAuthState_impl = () => {
-                auth.onAuthStateChanged(user => {
-                    const isAuthPage = window.location.pathname.includes('login');
-                    if (!user && !isAuthPage) {
-                        window.location.href = 'login';
-                    } else if (user && isAuthPage) {
-                        window.location.href = '/';
-                    } else if (user) {
-                        // --- !! NEW SECURITY CHECK !! ---
-                        const userRef = db.ref('users/' + user.uid);
-                        userRef.once('value', (snapshot) => {
-                            if (snapshot.exists() && snapshot.val().username) {
-                                // On the upload page, we need to fetch the username after validation
-                                if(typeof fetchUsername === 'function') {
-                                    fetchUsername(user.uid);
-                                }
-                                // NEW: Populate existing topics after authentication
-                                populateExistingTopics();
-                                document.body.style.visibility = 'visible';
-                            } else {
-                                window.location.href = 'login';
-                            }
-                        });
-                    }
-                });
-            };
-
-            // --- NEW: Function to get the username from the database ---
-            const fetchUsername = (uid) => {
-                const userRef = db.ref('users/' + uid + '/username');
-                userRef.once('value', (snapshot) => {
-                    const username = snapshot.val();
-                    const authorNameEl = document.getElementById('author-name');
-                    const submitBtn = document.getElementById('submit-btn');
-
-                    if (username) {
-                        currentUsername = username;
-                        authorNameEl.textContent = username;
-                        submitBtn.disabled = false; // Enable submission
-                    } else {
-                        // This case handles users who signed up before the username feature
-                        authorNameEl.textContent = "No username set. Please contact support.";
-                        // Keep the submit button disabled
-                    }
-                }).catch(error => {
-                    console.error("Failed to fetch username:", error);
-                    document.getElementById('author-name').textContent = "Error loading username.";
-                });
-            };
-
-            // --- NEW: Function to populate existing topics dropdown ---
-            const populateExistingTopics = () => {
-                const existingTopicSelect = document.getElementById('existing-topic');
-                const uploadsRef = db.ref('uploads');
-                
-                uploadsRef.once('value', (snapshot) => {
-                    // Clear existing options except the first placeholder
-                    existingTopicSelect.innerHTML = '<option value="" disabled selected>-- Current Topics --</option>';
-                    
-                    if (snapshot.exists()) {
-                        const topics = Object.keys(snapshot.val());
-                        
-                        if (topics.length > 0) {
-                            // Sort topics alphabetically (case-insensitive)
-                            topics.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-                            
-                            // Add each topic as an option
-                            topics.forEach(topic => {
-                                const option = document.createElement('option');
-                                option.value = topic;
-                                option.textContent = topic;
-                                existingTopicSelect.appendChild(option);
-                            });
-                            
-                            console.log(`Loaded ${topics.length} existing topics:`, topics);
-                        } else {
-                            // No topics found
-                            const option = document.createElement('option');
-                            option.value = '';
-                            option.textContent = 'No Existing Subjects';
-                            option.disabled = true;
-                            existingTopicSelect.appendChild(option);
-                            console.log('No existing topics found');
-                        }
-                    } else {
-                        // Database uploads node doesn't exist yet
-                        const option = document.createElement('option');
-                        option.value = '';
-                        option.textContent = 'No Existing Subjects';
-                        option.disabled = true;
-                        existingTopicSelect.appendChild(option);
-                        console.log('No uploads found in database');
-                    }
-                }).catch(error => {
-                    console.error('Error loading existing topics:', error);
-                    // Add error option
-                    const option = document.createElement('option');
-                    option.value = '';
-                    option.textContent = 'Error loading topics';
-                    option.disabled = true;
-                    existingTopicSelect.appendChild(option);
-                });
-            };
-
-            // --- Topic Selection Logic ---
-            const setupTopicSelection = () => {
-                const existingTopicRadio = document.getElementById('existing-topic-radio');
-                const customTopicRadio = document.getElementById('custom-topic-radio');
-                const existingTopicContainer = document.getElementById('existing-topic-container');
-                const customTopicContainer = document.getElementById('custom-topic-container');
-                const existingTopicSelect = document.getElementById('existing-topic');
-                const customTopicInput = document.getElementById('custom-topic');
-
-                // Handle radio button changes
-                existingTopicRadio.addEventListener('change', () => {
-                    if (existingTopicRadio.checked) {
-                        existingTopicContainer.style.display = 'block';
-                        customTopicContainer.style.display = 'none';
-                        existingTopicSelect.required = true;
-                        customTopicInput.required = false;
-                        customTopicInput.value = ''; // Clear custom input
-                    }
-                });
-
-                customTopicRadio.addEventListener('change', () => {
-                    if (customTopicRadio.checked) {
-                        existingTopicContainer.style.display = 'none';
-                        customTopicContainer.style.display = 'block';
-                        existingTopicSelect.required = false;
-                        customTopicInput.required = true;
-                        existingTopicSelect.value = ''; // Clear existing selection
-                        customTopicInput.focus(); // Focus on the input for better UX
-                    }
-                });
-
-                // Validate custom topic input
-                customTopicInput.addEventListener('input', (e) => {
-                    const value = e.target.value.trim();
-                    const isValid = value.length >= 2 && value.length <= 50 && /^[a-zA-Z0-9]+$/.test(value);
-                    
-                    if (value && !isValid) {
-                        customTopicInput.setCustomValidity('Topic must be 2-50 characters and contain only letters and numbers (no spaces or special characters)');
-                    } else {
-                        customTopicInput.setCustomValidity('');
-                    }
-                });
-
-                // Add keydown event listener to prevent spacebar input
-                customTopicInput.addEventListener('keydown', (e) => {
-                    // Prevent spacebar (keyCode 32) from being entered
-                    if (e.keyCode === 32 || e.key === ' ') {
-                        e.preventDefault();
-                        return false;
-                    }
-                });
-
-                // Add keypress event listener as additional prevention
-                customTopicInput.addEventListener('keypress', (e) => {
-                    // Prevent spacebar (keyCode 32) from being entered
-                    if (e.keyCode === 32 || e.key === ' ') {
-                        e.preventDefault();
-                        return false;
-                    }
-                });
-
-                // Add paste event listener to remove spaces from pasted content
-                customTopicInput.addEventListener('paste', (e) => {
-                    e.preventDefault();
-                    
-                    // Get pasted text and remove all spaces and special characters
-                    const pastedText = (e.clipboardData || window.clipboardData).getData('text');
-                    const cleanedText = pastedText.replace(/[^a-zA-Z0-9]/g, '');
-                    
-                    // Insert the cleaned text
-                    const currentValue = customTopicInput.value;
-                    const start = customTopicInput.selectionStart;
-                    const end = customTopicInput.selectionEnd;
-                    
-                    const newValue = currentValue.substring(0, start) + cleanedText + currentValue.substring(end);
-                    
-                    // Respect the maxlength attribute
-                    if (newValue.length <= 50) {
-                        customTopicInput.value = newValue;
-                        customTopicInput.setSelectionRange(start + cleanedText.length, start + cleanedText.length);
-                    }
-                    
-                    // Trigger input event to validate
-                    customTopicInput.dispatchEvent(new Event('input'));
-                });
-            };
-
-            // --- Upload Page Specific Logic ---
-            const setupUploadForm = () => {
-                const uploadForm = document.getElementById('uploadForm');
-                const messageContainer = document.getElementById('message-container');
-
-                uploadForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const user = auth.currentUser;
-                    if (!user || !currentUsername) {
-                        showMessage('error', 'Cannot submit without a valid user and username.');
-                        return;
-                    }
-
-                    const content = document.getElementById('content').value.trim();
-                    
-                    // Determine which topic to use
-                    let selectedTopic = '';
-                    const existingTopicRadio = document.getElementById('existing-topic-radio');
-                    
-                    if (existingTopicRadio.checked) {
-                        selectedTopic = document.getElementById('existing-topic').value;
-                    } else {
-                        selectedTopic = document.getElementById('custom-topic').value.trim();
-                    }
-                    
-                    if (!content || !selectedTopic) {
-                        showMessage('error', 'All fields are required.'); 
-                        return;
-                    }
-
-                    // Additional validation for custom topics
-                    if (!existingTopicRadio.checked) {
-                        if (selectedTopic.length < 2 || selectedTopic.length > 50) {
-                            showMessage('error', 'Custom topic must be between 2 and 50 characters.');
-                            return;
-                        }
-                        if (!/^[a-zA-Z0-9]+$/.test(selectedTopic)) {
-                            showMessage('error', 'Topic can only contain letters and numbers (no spaces or special characters).');
-                            return;
-                        }
-                    }
-
-                    // Create the upload data
-                    const uploadData = {
-                        uid: user.uid,
-                        content: content,
-                        name: currentUsername,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    };
-
-                    // Use Firebase transaction to update both locations atomically
-                    const uploadsRef = db.ref('uploads/' + selectedTopic);
-                    const userUploadsRef = db.ref('users/' + user.uid + '/uploadCount');
-                    const userUploadsListRef = db.ref('users/' + user.uid + '/uploads');
-
-                    // First, add the upload to the main uploads collection
-                    uploadsRef.push(uploadData).then((uploadRef) => {
-                        const uploadKey = uploadRef.key;
-                        
-                        // Now update the user's upload count and track this specific upload
-                        return Promise.all([
-                            // Increment user's total upload count
-                            userUploadsRef.transaction((currentCount) => {
-                                return (currentCount || 0) + 1;
-                            }),
-                            // Add this upload to the user's personal uploads list
-                            userUploadsListRef.child(uploadKey).set({
-                                topic: selectedTopic,
-                                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                                content: content.substring(0, 100) + (content.length > 100 ? '...' : '') // Store preview
-                            })
-                        ]);
-                    }).then(() => {
-                        showMessage('success', 'Submitted successfully! Redirecting to your topic...');
-
-                        // Wait a moment to show the success message, then redirect
-                        setTimeout(() => {
-                            window.location.href = `read?topic=${encodeURIComponent(selectedTopic)}`;
-                        }, 1500);
-                    }).catch(error => {
-                        console.error('Upload error:', error);
-                        showMessage('error', `Submission failed: ${error.message}`);
-                    });
-                });
-                
-                function showMessage(type, text) {
-                    if (!messageContainer) return;
-                    messageContainer.className = `message-container ${type}-message`;
-                    messageContainer.textContent = text;
-                    messageContainer.style.display = 'block';
-                }
-            };
-
-            // Initialize all page functions
-            setupMobileMenu_impl();
-            handleLogout_impl();
-            checkAuthState_impl();
-            setupTopicSelection();
-            setupUploadForm();
-        });
-    </script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="/assets/js/firebase-config.js"></script>
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/pages/upload.js"></script>
 </body>
 </html>

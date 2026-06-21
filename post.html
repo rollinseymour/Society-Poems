@@ -1,524 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
 <head>
-    <title>Post Details - Society Poems</title>
-    <link rel="icon" href="/Images/Untitled1.png">
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A story · Society Poems</title>
+  <link rel="icon" href="/Images/Untitled1.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <script>
+    (function () { try { var t = localStorage.getItem("sp-theme"); if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.setAttribute("data-theme", t); } catch (e) {} })();
+  </script>
 </head>
-<body data-theme="night" style="visibility: hidden;">
+<body data-page="read">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
 
-    <header>
-        <nav class="navbar">
-            <a href="/" class="nav-logo">📖 Society Poems</a>
-            <button id="menu-open-button" class="fas fa-bars"></button>
-            <ul class="nav-menu">
-                <button id="menu-close-button" class="fas fa-times"></button>
-                <li><a href="/" class="nav-link">Home</a></li>
-                <li><a href="read" class="nav-link">Read</a></li>
-                <li><a href="upload" class="nav-link active">Upload</a></li>
-                <li><a href="livechat" class="nav-link">Live Chat</a></li>
-                <li><a href="feedback" class="nav-link">Feedback</a></li>
-                <li><a href="profile" class="nav-link">Profile</a></li>
-            </ul>
-        </nav>
-    </header>
+  <main id="main" class="section">
+    <div class="container article-wrap">
+      <a href="read" class="back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        All stories
+      </a>
 
-    <main>
-        <div class="post-detail-container">
-            <div class="entries-header">
-                <button id="back-to-topic-btn" class="back-button">&larr; Back to Topic</button>
-                <h1 id="topic-title" class="section-title" style="margin: 0;"></h1>
-            </div>
+      <div id="post-loading"><div class="spinner"></div></div>
 
-            <div id="message-container" class="message-container" style="display: none;"></div>
-
-            <div id="post-detail" class="post-detail">
-                <div id="post-content" class="post-detail-content">Loading post...</div>
-                <div id="post-meta" class="post-detail-meta">
-                    <span id="post-author">Loading...</span>
-                    <span id="post-date">Loading...</span>
-                </div>
-                <div id="post-actions" class="post-actions">
-                    <button id="like-btn" class="action-btn">
-                        <span>❤️</span>
-                        <span id="like-count">0</span>
-                        <span id="like-text">Likes</span>
-                    </button>
-                    <button id="report-btn" class="action-btn report-btn">
-                        <span>🚩</span>
-                        <span>Report</span>
-                    </button>
-                    <div id="admin-actions" style="display: none;">
-                        <button id="delete-post-btn" class="action-btn" style="background: var(--error-color); color: white;">
-                            <span>🗑️</span>
-                            <span>Delete Post</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="comments-section" class="comments-section">
-                <div class="comments-header">
-                    <h3>Comments (<span id="comment-count">0</span>)</h3>
-                </div>
-
-                <div id="comment-form" class="comment-form">
-                    <textarea id="comment-input" class="comment-input" placeholder="Share your thoughts..." rows="3"></textarea>
-                    <button id="comment-submit" class="comment-submit">Post Comment</button>
-                </div>
-
-                <div id="comments-list">
-                    <p>Loading comments...</p>
-                </div>
-            </div>
+      <article class="article" id="post" hidden>
+        <div class="article-topic" id="post-badges"></div>
+        <div class="article-head">
+          <span class="avatar" id="post-avatar">?</span>
+          <div class="meta">
+            <b id="post-author">—</b>
+            <span id="post-time"></span>
+          </div>
         </div>
-    </main>
 
-    <!-- Report Modal -->
-    <div id="report-modal" class="modal-overlay" style="display: none;">
-        <div class="modal">
-            <h3>Report Post</h3>
-            <p>Why are you reporting this post?</p>
-            <div class="report-reasons">
-                <label class="report-reason">
-                    <input type="radio" name="report-reason" value="spam">
-                    Spam or unwanted content
-                </label>
-                <label class="report-reason">
-                    <input type="radio" name="report-reason" value="harassment">
-                    Harassment or bullying
-                </label>
-                <label class="report-reason">
-                    <input type="radio" name="report-reason" value="inappropriate">
-                    Inappropriate content
-                </label>
-                <label class="report-reason">
-                    <input type="radio" name="report-reason" value="copyright">
-                    Copyright violation
-                </label>
-                <label class="report-reason">
-                    <input type="radio" name="report-reason" value="other">
-                    Other
-                </label>
-            </div>
-            <textarea id="report-details" placeholder="Additional details (optional)..." rows="3" style="width: 100%; margin-bottom: 15px; padding: 10px; border: 1px solid var(--border-color); border-radius: var(--border-radius-s);"></textarea>
-            <div class="modal-actions">
-                <button id="cancel-report" class="modal-btn modal-btn-secondary">Cancel</button>
-                <button id="submit-report" class="modal-btn modal-btn-primary">Submit Report</button>
-            </div>
+        <div id="post-cw" class="cw-veil" hidden>
+          <div class="cw-tag">Content warning</div>
+          <p id="post-cw-text"></p>
+          <button class="btn btn-soft btn-sm" id="reveal-btn">Show story</button>
         </div>
+        <div class="article-body" id="post-body" hidden></div>
+
+        <div class="reaction-bar" id="reaction-bar">
+          <button class="reaction-btn" data-rx="heart"><span class="emoji">❤</span> Heart <span class="count" id="c-heart">0</span></button>
+          <button class="reaction-btn" data-rx="support"><span class="emoji">🤝</span> Support <span class="count" id="c-support">0</span></button>
+          <button class="reaction-btn" data-rx="hug"><span class="emoji">🫂</span> Hug <span class="count" id="c-hug">0</span></button>
+          <button class="reaction-btn report" id="report-btn">⚑ Report</button>
+          <button class="reaction-btn danger hidden" id="delete-btn">🗑 Delete</button>
+        </div>
+      </article>
+
+      <section class="comments" id="comments" hidden>
+        <h3 class="comments-title">Support &amp; replies <span id="comment-count" class="muted"></span></h3>
+
+        <form class="comment-form" id="comment-form">
+          <span class="avatar" id="my-avatar" style="width:40px;height:40px;">?</span>
+          <div class="grow">
+            <textarea class="input" id="comment-input" rows="2" placeholder="Share something kind or supportive…" maxlength="1000"></textarea>
+            <div style="text-align:right;margin-top:.5rem;">
+              <button type="submit" class="btn btn-primary btn-sm">Post reply</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="callout guest-prompt hidden" id="guest-prompt" style="margin-bottom:1.5rem;">
+          <strong>Want to respond?</strong> <a href="login">Sign in</a> to leave a supportive reply or react to this story.
+        </div>
+
+        <div id="comment-list"></div>
+      </section>
     </div>
+  </main>
 
-    <footer>
-        <p>&copy; 2025 Society Poems</p>
-        <div class="footer-links">
-            <a href="privacy-policy">Privacy Policy</a>
-            <span>|</span>
-            <a href="tos">Terms of Service</a>
-        </div>
-    </footer>
+  <div id="site-footer"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- Report modal -->
+  <div class="overlay" id="report-modal">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="report-title">
+      <h3 id="report-title">Report this story</h3>
+      <p class="sub">Thanks for helping keep Society Poems safe. What's the concern?</p>
+      <div id="report-reasons">
+        <label class="option"><input type="radio" name="reason" value="Harassment or bullying" /><span class="o-label">Harassment or bullying</span></label>
+        <label class="option"><input type="radio" name="reason" value="Hate or harmful content" /><span class="o-label">Hate or harmful content</span></label>
+        <label class="option"><input type="radio" name="reason" value="Spam or scam" /><span class="o-label">Spam or scam</span></label>
+        <label class="option"><input type="radio" name="reason" value="Someone may be in danger" /><span class="o-label">Someone may be in danger</span></label>
+        <label class="option"><input type="radio" name="reason" value="Other" /><span class="o-label">Other</span></label>
+      </div>
+      <textarea class="input" id="report-details" rows="3" placeholder="Add any details (optional)…" style="margin-top:.5rem;"></textarea>
+      <div class="sheet-actions">
+        <button class="btn btn-ghost" id="report-cancel">Cancel</button>
+        <button class="btn btn-primary" id="report-submit">Submit report</button>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDHXEMtVPn46b2qS1CPGUIEuQ8ntLyvLVM",
-            authDomain: "society-poems-97f4d.firebaseapp.com",
-            databaseURL: "https://society-poems-97f4d-default-rtdb.firebaseio.com",
-            projectId: "society-poems-97f4d",
-            storageBucket: "society-poems-97f4d.firebasestorage.app",
-            messagingSenderId: "723670230106",
-            appId: "1:723670230106:web:6d6dda4f8c46626c55a463"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database();
-
-        let currentUserUID = null;
-        let currentUsername = null;
-        let currentUserIsAdmin = false;
-        let currentTopic = null;
-        let currentPostId = null;
-        let postData = null;
-        const adminUIDs = ["SAD2VGjLrtVA80Cg0ay71rDiijQ2"];
-
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        currentTopic = urlParams.get('topic');
-        currentPostId = urlParams.get('postId');
-
-        if (!currentTopic || !currentPostId) {
-            window.location.href = 'read';
-        }
-
-        // Show message function
-        function showMessage(type, text) {
-            const messageContainer = document.getElementById('message-container');
-            messageContainer.className = `message-container ${type}-message`;
-            messageContainer.textContent = text;
-            messageContainer.style.display = 'block';
-            setTimeout(() => {
-                messageContainer.style.display = 'none';
-            }, 5000);
-        }
-
-        // Function to generate user avatar initials
-        function generateAvatar(name) {
-            if (!name) return '?';
-            const initials = name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
-            return initials || '?';
-        }
-
-        // Function to update avatars
-        function updateAvatars() {
-            // Update user's own avatar in comment form
-            const userAvatar = document.getElementById('user-avatar');
-            if (userAvatar && currentUsername) {
-                userAvatar.textContent = generateAvatar(currentUsername);
-            }
-            
-            // Update post author avatar
-            const postAvatar = document.getElementById('post-avatar');
-            if (postAvatar && postData) {
-                postAvatar.textContent = generateAvatar(postData.name);
-            }
-        }
-
-        // Check authentication state
-        const checkAuthState = () => {
-            auth.onAuthStateChanged(user => {
-                if (!user) {
-                    window.location.href = 'logins';
-                } else {
-                    currentUserUID = user.uid;
-                    const userRef = db.ref('users/' + user.uid);
-                    userRef.once('value', (snapshot) => {
-                        if (snapshot.exists() && snapshot.val().username) {
-                            currentUsername = snapshot.val().username;
-                            currentUserIsAdmin = adminUIDs.includes(user.uid);
-                            document.body.style.visibility = 'visible';
-                            loadPost();
-                            setupEventListeners();
-                            updateAvatars(); // Add this line
-                        } else {
-                            window.location.href = 'login';
-                        }
-                    });
-                }
-            });
-        };
-
-        // Load post data
-        function loadPost() {
-            const postRef = db.ref(`uploads/${currentTopic}/${currentPostId}`);
-            postRef.once('value', (snapshot) => {
-                if (!snapshot.exists()) {
-                    showMessage('error', 'Post not found.');
-                    setTimeout(() => {
-                        window.location.href = 'read';
-                    }, 2000);
-                    return;
-                }
-
-                postData = snapshot.val();
-                displayPost();
-                loadComments();
-                loadLikes();
-                setupAdminActions();
-            });
-        }
-
-        // Display post content
-        function displayPost() {
-            document.getElementById('topic-title').textContent = currentTopic;
-            document.getElementById('post-content').textContent = postData.content;
-            document.getElementById('post-author').textContent = postData.name || 'Anonymous';
-            
-            const date = new Date(postData.timestamp);
-            document.getElementById('post-date').textContent = date.toLocaleString();
-
-            // Set up back button
-            document.getElementById('back-to-topic-btn').onclick = () => {
-                window.location.href = `read?topic=${encodeURIComponent(currentTopic)}`;
-            };
-            
-            // Update avatars
-            updateAvatars();
-        }
-
-        // Setup admin actions
-        function setupAdminActions() {
-            const adminActions = document.getElementById('admin-actions');
-            const canDelete = (postData.uid && postData.uid === currentUserUID) || currentUserIsAdmin;
-            
-            if (canDelete) {
-                adminActions.style.display = 'block';
-                document.getElementById('delete-post-btn').onclick = deletePost;
-            }
-        }
-
-        // Delete post function
-        function deletePost() {
-            const confirmMessage = postData.uid === currentUserUID 
-                ? 'Are you sure you want to delete your post?' 
-                : 'Are you sure you want to permanently delete this post? (Admin action)';
-        
-            if (confirm(confirmMessage)) {
-                // Delete the main post from uploads
-                db.ref(`uploads/${currentTopic}/${currentPostId}`).remove().then(() => {
-                    // Remove post interactions
-                    const interactionsRef = db.ref(`interactions/${currentTopic}/${currentPostId}`);
-                    return interactionsRef.remove();
-                }).then(() => {
-                    // Update user's upload count (matching your existing structure)
-                    if (postData.uid) {
-                        const userUploadsRef = db.ref('users/' + postData.uid + '/uploadCount');
-                        const userUploadsListRef = db.ref('users/' + postData.uid + '/uploads/' + currentPostId);
-                        
-                        return Promise.all([
-                            userUploadsRef.transaction((currentCount) => {
-                                return Math.max((currentCount || 1) - 1, 0);
-                            }),
-                            userUploadsListRef.remove()
-                        ]);
-                    }
-                }).then(() => {
-                    showMessage('success', 'Post deleted successfully. Redirecting...');
-                    setTimeout(() => {
-                        window.location.href = `read?topic=${encodeURIComponent(currentTopic)}`;
-                    }, 2000);
-                }).catch(error => {
-                    console.error('Error deleting post:', error);
-                    showMessage('error', 'Failed to delete post.');
-                });
-            }
-        }
-
-        // Load and display comments
-        function loadComments() {
-            const commentsRef = db.ref(`interactions/${currentTopic}/${currentPostId}/comments`);
-            commentsRef.on('value', (snapshot) => {
-                const commentsList = document.getElementById('comments-list');
-                const commentCount = document.getElementById('comment-count');
-                
-                commentsList.innerHTML = '';
-                
-                if (!snapshot.exists()) {
-                    commentsList.innerHTML = '<p style="padding: 20px; text-align: center; color: #65676b;">No comments yet. Be the first to comment!</p>';
-                    commentCount.textContent = '0';
-                    return;
-                }
-
-                const comments = [];
-                snapshot.forEach((childSnapshot) => {
-                    const comment = childSnapshot.val();
-                    comment.id = childSnapshot.key;
-                    comments.push(comment);
-                });
-
-                comments.sort((a, b) => a.timestamp - b.timestamp);
-                commentCount.textContent = comments.length;
-
-                comments.forEach(comment => {
-                    const commentDiv = document.createElement('div');
-                    commentDiv.className = 'comment';
-                    
-                    const canDeleteComment = comment.uid === currentUserUID || currentUserIsAdmin;
-                    
-                    commentDiv.innerHTML = `
-                        <div class="comment-avatar-small">${generateAvatar(comment.username)}</div>
-                        <div class="comment-body">
-                            <div class="comment-bubble">
-                                <div class="comment-author">${comment.username}</div>
-                                <div class="comment-content">${comment.content}</div>
-                            </div>
-                            <div class="comment-meta">
-                                <span class="comment-time">${new Date(comment.timestamp).toLocaleString()}</span>
-                                ${canDeleteComment ? `<button class="comment-delete" onclick="deleteComment('${comment.id}')">Delete</button>` : ''}
-                            </div>
-                        </div>
-                    `;
-                    
-                    commentsList.appendChild(commentDiv);
-                });
-            });
-        }
-
-        // Delete comment function
-        window.deleteComment = function(commentId) {
-            if (confirm('Are you sure you want to delete this comment?')) {
-                db.ref(`interactions/${currentTopic}/${currentPostId}/comments/${commentId}`).remove()
-                    .then(() => {
-                        showMessage('success', 'Comment deleted successfully.');
-                    })
-                    .catch(error => {
-                        console.error('Error deleting comment:', error);
-                        showMessage('error', 'Failed to delete comment.');
-                    });
-            }
-        };
-
-        // Load likes
-        function loadLikes() {
-            const likesRef = db.ref(`interactions/${currentTopic}/${currentPostId}/likes`);
-            likesRef.on('value', (snapshot) => {
-                const likeCount = snapshot.exists() ? snapshot.numChildren() : 0;
-                document.getElementById('like-count').textContent = likeCount;
-                
-                // Check if current user has liked
-                const userLiked = snapshot.exists() && snapshot.hasChild(currentUserUID);
-                const likeBtn = document.getElementById('like-btn');
-                const likeText = document.getElementById('like-text');
-                
-                if (userLiked) {
-                    likeBtn.classList.add('liked');
-                    likeText.textContent = 'Unlike';
-                } else {
-                    likeBtn.classList.remove('liked');
-                    likeText.textContent = 'Like';
-                }
-            });
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Like button
-            document.getElementById('like-btn').onclick = toggleLike;
-            
-            // Comment submission
-            document.getElementById('comment-submit').onclick = submitComment;
-            
-            // Report button
-            document.getElementById('report-btn').onclick = showReportModal;
-            
-            // Report modal
-            document.getElementById('cancel-report').onclick = hideReportModal;
-            document.getElementById('submit-report').onclick = submitReport;
-            
-            // Close modal when clicking outside
-            document.getElementById('report-modal').onclick = (e) => {
-                if (e.target.id === 'report-modal') {
-                    hideReportModal();
-                }
-            };
-
-            // Mobile menu
-            setupMobileMenu();
-            handleLogout();
-        }
-
-        // Toggle like function
-        function toggleLike() {
-            const likeRef = db.ref(`interactions/${currentTopic}/${currentPostId}/likes/${currentUserUID}`);
-            
-            likeRef.once('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    // Unlike
-                    likeRef.remove();
-                } else {
-                    // Like
-                    likeRef.set({
-                        username: currentUsername,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    });
-                }
-            });
-        }
-
-        // Submit comment function
-        function submitComment() {
-            const commentInput = document.getElementById('comment-input');
-            const content = commentInput.value.trim();
-            
-            if (!content) {
-                showMessage('error', 'Please enter a comment.');
-                return;
-            }
-
-            const commentRef = db.ref(`interactions/${currentTopic}/${currentPostId}/comments`).push();
-            commentRef.set({
-                content: content,
-                uid: currentUserUID,
-                username: currentUsername,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            }).then(() => {
-                commentInput.value = '';
-                showMessage('success', 'Comment posted successfully!');
-            }).catch(error => {
-                console.error('Error posting comment:', error);
-                showMessage('error', 'Failed to post comment.');
-            });
-        }
-
-        // Report modal functions
-        function showReportModal() {
-            document.getElementById('report-modal').style.display = 'flex';
-        }
-
-        function hideReportModal() {
-            document.getElementById('report-modal').style.display = 'none';
-            // Reset form
-            document.querySelectorAll('input[name="report-reason"]').forEach(input => input.checked = false);
-            document.getElementById('report-details').value = '';
-        }
-
-        function submitReport() {
-            const selectedReason = document.querySelector('input[name="report-reason"]:checked');
-            if (!selectedReason) {
-                alert('Please select a reason for reporting.');
-                return;
-            }
-
-            const details = document.getElementById('report-details').value.trim();
-            
-            const reportRef = db.ref(`reports/${currentTopic}/${currentPostId}`).push();
-            reportRef.set({
-                reason: selectedReason.value,
-                details: details,
-                reportedBy: currentUserUID,
-                reporterUsername: currentUsername,
-                postAuthor: postData.name,
-                postContent: postData.content.substring(0, 100) + '...',
-                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                status: 'pending'
-            }).then(() => {
-                hideReportModal();
-                showMessage('success', 'Report submitted successfully. Thank you for helping keep our community safe.');
-            }).catch(error => {
-                console.error('Error submitting report:', error);
-                showMessage('error', 'Failed to submit report.');
-            });
-        }
-
-        // Mobile menu functionality
-        const setupMobileMenu = () => {
-            const openBtn = document.getElementById('menu-open-button');
-            const closeBtn = document.getElementById('menu-close-button');
-            const navMenu = document.querySelector('.nav-menu');
-            if (openBtn && closeBtn && navMenu) {
-                openBtn.addEventListener('click', () => navMenu.classList.add('active'));
-                closeBtn.addEventListener('click', () => navMenu.classList.remove('active'));
-            }
-        };
-
-        // Logout functionality
-        const handleLogout = () => {
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', () => {
-                    auth.signOut().catch(error => console.error('Sign out error', error));
-                });
-            }
-        };
-
-        // Initialize the page
-        checkAuthState();
-    </script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="/assets/js/firebase-config.js"></script>
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/pages/post.js"></script>
 </body>
 </html>

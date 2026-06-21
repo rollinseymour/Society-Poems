@@ -1,194 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback - Society Poems</title>
-    <link rel="icon" href="/Images/Untitled1.png">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Send feedback · Society Poems</title>
+  <link rel="icon" href="/Images/Untitled1.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <script>
+    (function () { try { var t = localStorage.getItem("sp-theme"); if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.setAttribute("data-theme", t); } catch (e) {} })();
+  </script>
 </head>
-<body data-theme="night" style="visibility: hidden;">
+<body data-page="feedback" class="protected">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
 
-    <header>
-        <nav class="navbar">
-            <a href="/" class="nav-logo">📖 Society Poems</a>
-            <button id="menu-open-button" class="fas fa-bars"></button>
-            <ul class="nav-menu">
-                <button id="menu-close-button" class="fas fa-times"></button>
-                <li><a href="/" class="nav-link">Home</a></li>
-                <li><a href="read" class="nav-link">Read</a></li>
-                <li><a href="upload" class="nav-link">Upload</a></li>
-                <li><a href="livechat" class="nav-link">Live Chat</a></li>
-                <li><a href="feedback" class="nav-link active">Feedback</a></li>
-                <li><a href="profile" class="nav-link">Profile</a></li>
-            </ul>
-        </nav>
-    </header>
+  <main id="main" class="section">
+    <div class="container" style="max-width:680px;">
+      <div class="page-head">
+        <span class="eyebrow">We're listening</span>
+        <h1>Send feedback</h1>
+        <p class="lead">Found a bug, have an idea, or want to tell us how Society Poems is feeling lately? We read everything.</p>
+      </div>
 
-    <main>
-        <div class="form-container" style="margin: auto;">
-            <h1>📝 Feedback</h1>
-            <div id="message-container"></div>
-            <form id="feedbackForm">
-                <p style="text-align: center; margin-bottom: 20px;">Submitting feedback as: <strong id="user-info">Loading...</strong></p>
-                
-                <label for="message">Message:</label>
-                <textarea id="message" rows="6" placeholder="All your thoughts, suggestions, or report issues are much appreciated by the developer." required></textarea>
-                
-                <button type="submit" id="submit-btn" class="form-button form-button-primary" disabled>Send Feedback</button>
-            </form>
+      <div id="fb-msg" class="msg-box"></div>
+
+      <form class="form-card" id="fb-form">
+        <div class="field">
+          <label>From</label>
+          <div class="input-row">
+            <span class="avatar" id="fb-avatar" style="width:36px;height:36px;font-size:.8rem;">?</span>
+            <span id="fb-from" style="font-weight:600;">…</span>
+          </div>
         </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Society Poems</p>
-        <div class="footer-links">
-            <a href="privacy-policy">Privacy Policy</a>
-            <span>|</span>
-            <a href="tos">Terms of Service</a>
+        <div class="field">
+          <label for="fb-message">Your message</label>
+          <textarea class="input" id="fb-message" rows="7" placeholder="Tell us anything…" required></textarea>
         </div>
-    </footer>
+        <button type="submit" id="fb-btn" class="btn btn-primary btn-lg btn-block">Send feedback</button>
+      </form>
+    </div>
+  </main>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <div id="site-footer"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDHXEMtVPn46b2qS1CPGUIEuQ8ntLyvLVM",
-                authDomain: "society-poems-97f4d.firebaseapp.com",
-                databaseURL: "https://society-poems-97f4d-default-rtdb.firebaseio.com",
-                projectId: "society-poems-97f4d",
-                storageBucket: "society-poems-97f4d.firebasestorage.app",
-                messagingSenderId: "723670230106",
-                appId: "1:723670230106:web:6d6dda4f8c46626c55a463"
-            };
-
-            const app = firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.database();
-
-            // --- Shared Logic ---
-            const setupMobileMenu_impl = () => {
-                const openBtn = document.getElementById('menu-open-button');
-                const closeBtn = document.getElementById('menu-close-button');
-                const navMenu = document.querySelector('.nav-menu');
-                if (openBtn && closeBtn && navMenu) {
-                    openBtn.addEventListener('click', () => navMenu.classList.add('active'));
-                    closeBtn.addEventListener('click', () => navMenu.classList.remove('active'));
-                }
-            };
-
-            const handleLogout_impl = () => {
-                const logoutBtn = document.getElementById('logoutBtn');
-                if (logoutBtn) {
-                    logoutBtn.addEventListener('click', () => {
-                        auth.signOut().catch(error => console.error('Sign out error', error));
-                    });
-                }
-            };
-            
-            const checkAuthState_impl = () => {
-                auth.onAuthStateChanged(user => {
-                    const isAuthPage = window.location.pathname.includes('login');
-                    if (!user && !isAuthPage) {
-                        window.location.href = 'login';
-                    } else if (user && isAuthPage) {
-                        window.location.href = '/';
-                    } else if (user) {
-                        // --- !! NEW SECURITY CHECK !! ---
-                        const userRef = db.ref('users/' + user.uid);
-                        userRef.once('value', (snapshot) => {
-                            if (snapshot.exists() && snapshot.val().username) {
-                                document.body.style.visibility = 'visible';
-                            } else {
-                                window.location.href = 'login';
-                            }
-                        });
-
-                        if (typeof fetchUserData === 'function') {
-                            fetchUserData(user.uid);
-                        }
-                    }
-                });
-            };
-
-            let currentUserData = null;
-
-            const fetchUserData = (uid) => {
-                const userRef = db.ref('users/' + uid);
-                userRef.once('value', (snapshot) => {
-                    const userData = snapshot.val();
-                    const userInfoEl = document.getElementById('user-info');
-                    const submitBtn = document.getElementById('submit-btn');
-
-                    if (userData && userData.username) {
-                        currentUserData = {
-                            username: userData.username,
-                            email: auth.currentUser.email
-                        };
-                        userInfoEl.textContent = `${userData.username} (${auth.currentUser.email})`;
-                        submitBtn.disabled = false; // Enable submission
-                    } else {
-                        userInfoEl.textContent = "Error loading user data";
-                    }
-                }).catch(error => {
-                    console.error("Failed to fetch user data:", error);
-                    document.getElementById('user-info').textContent = "Error loading user data.";
-                });
-            };
-
-            // --- Feedback Page Specific Logic ---
-            const setupFeedbackForm = () => {
-                const feedbackForm = document.getElementById('feedbackForm');
-                const messageContainer = document.getElementById('message-container');
-
-                feedbackForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    
-                    const user = auth.currentUser;
-                    if (!user || !currentUserData) {
-                        showMessage('error', 'Cannot submit without valid user data.');
-                        return;
-                    }
-                    
-                    const message = document.getElementById('message').value.trim();
-                    
-                    if (!message) {
-                        showMessage('error', 'Message is required.');
-                        return;
-                    }
-
-                    const feedbackRef = db.ref('feedback');
-                    feedbackRef.push({
-                        uid: user.uid,
-                        username: currentUserData.username,
-                        email: currentUserData.email,
-                        message: message,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    }).then(() => {
-                        showMessage('success', 'Thank you for your feedback! We appreciate your input.');
-                        feedbackForm.reset();
-                    }).catch(error => {
-                        showMessage('error', `Submission failed: ${error.message}`);
-                    });
-                });
-                
-                function showMessage(type, text) {
-                    if (!messageContainer) return;
-                    messageContainer.className = `message-container ${type}-message`;
-                    messageContainer.textContent = text;
-                    messageContainer.style.display = 'block';
-                }
-            };
-
-            // Initialize all page functions
-            setupMobileMenu_impl();
-            handleLogout_impl();
-            checkAuthState_impl();
-            setupFeedbackForm();
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="/assets/js/firebase-config.js"></script>
+  <script src="/assets/js/shell.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var db = window.SP.db;
+      var TS = firebase.database.ServerValue.TIMESTAMP;
+      var me = null, profile = null;
+      function msg(type, text) {
+        var el = document.getElementById("fb-msg");
+        el.className = "msg-box show " + type;
+        el.textContent = text;
+        if (type !== "success") setTimeout(function () { el.className = "msg-box"; }, 6000);
+      }
+      window.SP.requireAuth(function (user, prof) {
+        me = user; profile = prof;
+        document.getElementById("fb-from").textContent = prof.username + " · " + (prof.email || user.email || "");
+        document.getElementById("fb-avatar").textContent = window.SP.initials(prof.username);
+      });
+      document.getElementById("fb-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!me || !profile) return;
+        var message = document.getElementById("fb-message").value.trim();
+        if (!message) return msg("error", "Please write a message first.");
+        var btn = document.getElementById("fb-btn");
+        btn.disabled = true; btn.textContent = "Sending…";
+        db.ref("feedback").push({
+          uid: me.uid,
+          username: profile.username,
+          email: profile.email || me.email || "",
+          message: message,
+          timestamp: TS,
+        }).then(function () {
+          msg("success", "Thank you — your feedback means a lot 💛");
+          document.getElementById("fb-message").value = "";
+        }).catch(function () {
+          msg("error", "Something went wrong. Please try again.");
+        }).finally(function () {
+          btn.disabled = false; btn.textContent = "Send feedback";
         });
-    </script>
+      });
+    })();
+  </script>
 </body>
 </html>

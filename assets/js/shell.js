@@ -282,5 +282,7 @@
     wireMobile();
     wireLogout();
     applyAuthVisibility(null); // default to guest view until auth resolves
+    // Keep the nav (Sign in vs. avatar/Log out) in sync with auth on every page.
+    if (SP.auth) SP.observe();
   });
 })();

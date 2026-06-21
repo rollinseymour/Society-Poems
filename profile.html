@@ -1,167 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Society Poems</title>
-    <link rel="icon" href="/Images/Untitled1.png">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your profile · Society Poems</title>
+  <link rel="icon" href="/Images/Untitled1.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <script>
+    (function () { try { var t = localStorage.getItem("sp-theme"); if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.setAttribute("data-theme", t); } catch (e) {} })();
+  </script>
 </head>
+<body data-page="profile" class="protected">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
 
-<body>
-    <header>
-        <nav class="navbar">
-            <a href="https://societypoems.com/" class="nav-logo">📖 Society Poems</a>
-            <button id="menu-open-button" class="fas fa-bars"></button>
-            <ul class="nav-menu">
-                <button id="menu-close-button" class="fas fa-times"></button>
-                <li><a href="/" class="nav-link">Home</a></li>
-                <li><a href="read" class="nav-link">Read</a></li>
-                <li><a href="upload" class="nav-link">Upload</a></li>
-                <li><a href="livechat" class="nav-link">Live Chat</a></li>
-                <li><a href="feedback" class="nav-link">Feedback</a></li>
-                <li><a id="logoutBtn" class="nav-link">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main class="profile-container">
-        <div class="profile-header">
-        <div class="profile-content">
-        <p style="font-size: 8pt;">Note: You can find other users' profiles by putting "/(username)" at the end of this site's link.</p>
+  <main id="main" class="section">
+    <div class="container" style="max-width:820px;">
+      <div class="profile-head">
+        <span class="avatar profile-avatar" id="p-avatar">?</span>
+        <div style="flex:1;">
+          <h1 id="p-username">…</h1>
+          <div class="profile-meta">
+            <span id="p-joined"></span>
+            <span id="p-email"></span>
+          </div>
+          <div class="profile-stats">
+            <div class="stat"><b id="p-count">0</b><span>Stories</span></div>
+            <div class="stat"><b id="p-support">0</b><span>Support received</span></div>
+          </div>
         </div>
-            <div class="username-display">
-                <h4>Profile</h4>
-                <center><h1 style="background-color: black; color:white;" id="current-username"></h1></center>
-            </div>
-            <div class="profile-elements"><ul><li>Posts</li>
-                                            <li>Comments</li>
-                                        </ul>
-            </div>
-        </div>
-        <div>
-            <div class="user-posts">
-                <h1>Testing</h1>
-            </div>
-        </div>
-        
-    </main>
-    
-    <footer>
-        <p>&copy; 2025 Society Poems</p>
-        <div class="footer-links">
-            <a href="privacy-policy">Privacy Policy</a>
-            <span>|</span>
-            <a href="tos">Terms of Service</a>
-        </div>
-    </footer>
+      </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // TODO: Replace with your Firebase config.
-            const firebaseConfig = {
-                apiKey: "AIzaSyDHXEMtVPn46b2qS1CPGUIEuQ8ntLyvLVM",
-                authDomain: "society-poems-97f4d.firebaseapp.com",
-                databaseURL: "https://society-poems-97f4d-default-rtdb.firebaseio.com",
-                projectId: "society-poems-97f4d",
-                storageBucket: "society-poems-97f4d.firebasestorage.app",
-                messagingSenderId: "723670230106",
-                appId: "1:723670230106:web:6d6dda4f8c46626c55a463"
-            };
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin:1.5rem 0 2.5rem;">
+        <a href="upload" class="btn btn-primary">Share a new story</a>
+        <button type="button" class="btn btn-ghost" data-action="logout">Log out</button>
+      </div>
 
-            
-            const app = firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.database();
-            
-            // --- Shared Logic ---
-            const setupMobileMenu = () => {
-                const openBtn = document.getElementById('menu-open-button');
-                const closeBtn = document.getElementById('menu-close-button');
-                const navMenu = document.querySelector('.nav-menu');
-                if (openBtn && closeBtn && navMenu) {
-                    openBtn.addEventListener('click', () => navMenu.classList.add('active'));
-                    closeBtn.addEventListener('click', () => navMenu.classList.remove('active'));
-                }
-            };
-            
-            const checkAuthState = () => {
-                auth.onAuthStateChanged(user => {
-                    console.log('[v0] Auth state changed. User:', user ? 'logged in' : 'logged out');
-                    const isAuthPage = window.location.pathname.includes('login');
-                    if (!user && !isAuthPage) {
-                        console.log('[v0] No user, redirecting to login');
-                        window.location.href = 'login';
-                    } else if (user && isAuthPage) {
-                        window.location.href = '/';
-                    } else if (user) {
-                        const userRef = db.ref('users/' + user.uid);
-                        userRef.once('value', (snapshot) => {
-                            if (snapshot.exists() && snapshot.val().username) {
-                                console.log('[v0] User authenticated and has username');
-                                document.body.style.visibility = 'visible';
-                            } else {
-                                console.log('[v0] User missing username, redirecting to login');
-                                window.location.href = 'login';
-                            }
-                        });
-                    }
-                });
-            };
+      <h2 class="section-title" style="text-align:left;font-size:1.6rem;margin-bottom:1.25rem;">Your stories</h2>
+      <div id="my-feed" class="feed"><div class="spinner"></div></div>
+      <div id="my-empty" class="empty hidden">
+        <div class="ico">🌱</div>
+        <h3>You haven't shared yet</h3>
+        <p>When you're ready, your stories will gather here.</p>
+        <a href="upload" class="btn btn-primary mt-1">Share your first story</a>
+      </div>
+    </div>
+  </main>
 
-            //-Logout Function-//
+  <div id="site-footer"></div>
 
-            const handleLogout = () => {
-                const logoutBtn = document.getElementById('logoutBtn');
-                if (logoutBtn) {
-                    logoutBtn.addEventListener('click', () => {
-                        console.log('[v0] Logout button clicked');
-                        auth.signOut()
-                            .then(() => {
-                                console.log('[v0] Successfully signed out');
-                                // Note: checkAuthState() will handle the redirect automatically
-                            })
-                            .catch(error => {
-                                console.error('[v0] Sign out error:', error);
-                                alert('Failed to sign out. Please try again.');
-                            });
-                    });
-                }
-            };
-
-            const fetchUsername = () => {
-                auth.onAuthStateChanged(user => {
-                    if (user) {
-                        const userRef = db.ref('users/' + user.uid);
-                        userRef.once('value', (snapshot) => {
-                            const usernameElement = document.getElementById('current-username');
-                            if (usernameElement) {
-                                if (snapshot.exists() && snapshot.val().username) {
-                                    usernameElement.textContent = snapshot.val().username;
-                                } else {
-                                    usernameElement.textContent = 'Username not found';
-                                }
-                            }
-                        }).catch(error => {
-                            console.error('[v0] Error fetching username:', error);
-                            const usernameElement = document.getElementById('current-username');
-                            if (usernameElement) {
-                                usernameElement.textContent = 'Error loading username';
-                            }
-                        });
-                    }
-                });
-            };
-
-            setupMobileMenu();
-            handleLogout();
-            checkAuthState();
-            fetchUsername();
-        });
-    </script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="/assets/js/firebase-config.js"></script>
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/pages/profile.js"></script>
 </body>
-
 </html>

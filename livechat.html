@@ -1,720 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
 <head>
-    <title>Live Chat Rooms - Society Poems</title>
-    <link rel="icon" href="/Images/Untitled1.png">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="readonly-styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Circles · Society Poems</title>
+  <meta name="description" content="Gentle, real-time support circles. Talk things through with people who understand." />
+  <link rel="icon" href="/Images/Untitled1.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <script>
+    (function () { try { var t = localStorage.getItem("sp-theme"); if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.setAttribute("data-theme", t); } catch (e) {} })();
+  </script>
 </head>
-<body data-theme="night" style="visibility: hidden;">
+<body data-page="livechat">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
 
-    <header>
-        <nav class="navbar">
-            <a href="index" class="nav-logo">📖 Society Poems</a>
-            <button id="menu-open-button" class="fas fa-bars"></button>
-            <ul class="nav-menu">
-                <button id="menu-close-button" class="fas fa-times"></button>
-                <li><a href="/" class="nav-link">Home</a></li>
-                <li><a href="read" class="nav-link">Read</a></li>
-                <li><a href="upload" class="nav-link">Upload</a></li>
-                <li><a href="livechat" class="nav-link active">Live Chat</a></li>
-                <li><a href="feedback" class="nav-link">Feedback</a></li>
-                <li><a href="profile" class="nav-link">Profile</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <div class="chat-container">
-            <!-- Chat Rooms List View -->
-            <div id="chat-rooms-view" class="chat-rooms-view">
-                <div class="chat-header">
-                    <h1 class="section-title">Live Chat Rooms</h1>
-                    <div class="chat-stats">
-                        <span id="active-rooms-count">0</span> active rooms • 
-                        <span id="total-users-count">0</span> users online
-                    </div>
-                </div>
-
-                <div id="message-container" class="message-container" style="display: none;"></div>
-
-                <!-- Guest message for chat -->
-                <div id="guest-chat-message" class="guest-only" style="display: none;">
-                    <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; border-left: 4px solid var(--primary-color);">
-                        <h3 style="margin-top: 0; color: var(--text-primary);">👋 Welcome to Live Chat!</h3>
-                        <p style="color: var(--text-secondary); margin-bottom: 15px;">
-                            You can browse active chat rooms, but you'll need to <a href="login" style="color: var(--primary-color);">sign in</a> to join conversations and create new rooms.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="chat-rooms-grid" id="chat-rooms-grid">
-                    <div class="loading-placeholder">
-                        <div class="loading-spinner"></div>
-                        <p>Loading chat rooms...</p>
-                    </div>
-                </div>
-
-                <div class="empty-state" id="empty-state" style="display: none;">
-                    <div class="empty-icon">💬</div>
-                    <h3>No active chat rooms</h3>
-                    <p class="auth-required">Be the first to start a conversation! Click the "New Live Chat" button to create a chat room.</p>
-                    <p class="guest-only">No active conversations right now. <a href="login">Sign in</a> to start a new chat room!</p>
-                </div>
-            </div>
-
-            <!-- Individual Chat Room View -->
-            <div id="chat-room-view" class="chat-room-view" style="display: none;">
-                <div class="chat-room-header">
-                    <button id="back-to-rooms-btn" class="back-button">&larr; Back to Rooms</button>
-                    <div class="chat-room-info">
-                        <h2 id="current-room-topic">Loading...</h2>
-                        <div class="room-stats">
-                            <span id="room-users-count">0</span> users • 
-                            Created by <span id="room-creator">Unknown</span>
-                            <span id="room-expiry-warning" class="room-expiry-warning" style="display: none;"></span>
-                        </div>
-                    </div>
-                    <button id="leave-room-btn" class="leave-room-btn auth-required">Leave Room</button>
-                </div>
-
-                <div class="chat-messages-container">
-                    <div id="chat-messages" class="chat-messages">
-                        <div class="welcome-message">
-                            <p>Welcome to the chat room! <span class="auth-required">Start the conversation...</span><span class="guest-only"><a href="login">Sign in</a> to join the conversation!</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="chat-input-container auth-required">
-                    <div class="chat-input-wrapper">
-                        <input type="text" id="chat-message-input" placeholder="Type your message..." maxlength="500">
-                        <button id="send-message-btn" class="send-message-btn">
-                            <span>Send</span>
-                        </button>
-                    </div>
-                    <div class="chat-input-info">
-                        <span id="typing-indicator" class="typing-indicator" style="display: none;"></span>
-                        <span class="char-count"><span id="char-count">0</span>/500</span>
-                    </div>
-                </div>
-
-                <!-- Guest input message -->
-                <div class="guest-only" style="padding: 20px; text-align: center; background: var(--bg-secondary); border-top: 1px solid var(--border-color);">
-                    <p style="margin: 0; color: var(--text-secondary);">
-                        <a href="login" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Sign in</a> to participate in this conversation
-                    </p>
-                </div>
-            </div>
+  <main id="main" class="section">
+    <div class="container">
+      <!-- Rooms list -->
+      <div id="rooms-view">
+        <div class="page-head">
+          <span class="eyebrow">Real-time support</span>
+          <h1>Live Circles</h1>
+          <p class="lead">Gentle, real-time rooms to talk things through with others who understand. Come for ten minutes or stay a while — circles quietly close after a day of rest.</p>
         </div>
+        <div class="toolbar">
+          <span class="muted" id="rooms-stat">Loading circles…</span>
+          <button class="btn btn-primary" id="new-circle-btn" data-auth="user">+ Start a circle</button>
+        </div>
+        <div id="rooms-grid" class="circle-grid"><div class="spinner"></div></div>
+        <div id="rooms-empty" class="empty hidden">
+          <div class="ico">🫂</div>
+          <h3>No circles open right now</h3>
+          <p>Start one and others can join you.</p>
+          <button class="btn btn-primary mt-1" data-auth="user" id="empty-new-btn">Start a circle</button>
+          <p class="muted mt-1" data-auth="guest"><a href="login">Sign in</a> to start a circle.</p>
+        </div>
+      </div>
 
-        <!-- Floating New Chat Button (only for authenticated users) -->
-        <button id="new-chat-btn" class="floating-new-chat-btn auth-required">
-            <span class="btn-icon">+</span>
-            <span class="btn-text">New Live Chat</span>
-        </button>
-
-        <!-- New Chat Modal -->
-        <div id="new-chat-modal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Create New Chat Room</h2>
-                    <button id="close-modal-btn" class="close-modal-btn">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form id="new-chat-form">
-                        <label for="chat-topic">Chat Topic:</label>
-                        <input type="text" id="chat-topic" placeholder="Enter a topic for discussion..." maxlength="100" required>
-                        <div class="form-help">Choose a topic that others can easily find and join</div>
-                        <div class="form-help expiry-help">💡 Chat rooms automatically close after 24 hours of inactivity</div>
-                        <button type="submit" id="create-chat-btn" class="form-button form-button-primary">Create Chat Room</button>
-                    </form>
-                </div>
+      <!-- Single room -->
+      <div id="room-view" hidden>
+        <div class="chat">
+          <div class="chat-head">
+            <button class="icon-btn" id="leave-btn" aria-label="Back to circles">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div style="flex:1;">
+              <h2 id="room-topic">Circle</h2>
+              <div class="c-sub"><span class="live-dot"></span><span id="room-active">0 here</span></div>
             </div>
+          </div>
+          <div class="chat-scroll" id="messages"></div>
+          <form class="composer" id="composer" data-auth="user">
+            <input class="input" id="msg-input" placeholder="Say something kind…" maxlength="500" autocomplete="off" />
+            <button class="btn btn-primary" type="submit">Send</button>
+          </form>
+          <div class="composer" data-auth="guest" style="justify-content:center;">
+            <span class="muted"><a href="login">Sign in</a> to join the conversation.</span>
+          </div>
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 
-    <footer>
-        <p>&copy; 2025 Society Poems</p>
-        <div class="footer-links">
-            <a href="privacy-policy">Privacy Policy</a>
-            <span>|</span>
-            <a href="tos">Terms of Service</a>
-        </div>
-    </footer>
+  <div id="site-footer"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-    <script src="shared-auth-utils.js"></script>
-    <script src="chat-cleanup.js"></script>
+  <!-- New circle modal -->
+  <div class="overlay" id="circle-modal">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="circle-title">
+      <h3 id="circle-title">Start a circle</h3>
+      <p class="sub">Open a gentle space for a conversation. Others can join.</p>
+      <div class="field">
+        <label for="circle-topic">What's it about?</label>
+        <input class="input" id="circle-topic" placeholder="e.g. Hard days, Gratitude, Just listening" maxlength="60" />
+      </div>
+      <div class="field">
+        <label for="circle-desc">A short welcome (optional)</label>
+        <input class="input" id="circle-desc" placeholder="Set the tone for your circle" maxlength="140" />
+      </div>
+      <div class="sheet-actions">
+        <button class="btn btn-ghost" id="circle-cancel">Cancel</button>
+        <button class="btn btn-primary" id="circle-create">Open circle</button>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDHXEMtVPn46b2qS1CPGUIEuQ8ntLyvLVM",
-            authDomain: "society-poems-97f4d.firebaseapp.com",
-            databaseURL: "https://society-poems-97f4d-default-rtdb.firebaseio.com",
-            projectId: "society-poems-97f4d",
-            storageBucket: "society-poems-97f4d.firebasestorage.app",
-            messagingSenderId: "723670230106",
-            appId: "1:723670230106:web:6d6dda4f8c46626c55a463"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database();
-
-        let currentUserUID = null;
-        let currentUsername = null;
-        let currentUserIsAdmin = false;
-        let currentChatRoom = null;
-        let messageListener = null;
-        let usersListener = null;
-
-        // Initialize authentication with read-only support
-        AuthUtils.initReadOnlyAuth(firebase, auth, db, {
-            requireAuth: false, // Allow guests to view chat rooms
-            showReadOnlyMessage: false, // We'll show our own chat-specific message
-            onAuthSuccess: (user, userData) => {
-                currentUserUID = user.uid;
-                currentUsername = userData.username;
-                currentUserIsAdmin = AuthUtils.isAdmin();
-                console.log('User authenticated for chat:', userData.username);
-            },
-            onAuthFailure: () => {
-                console.log('User not authenticated - showing read-only chat mode');
-                currentUserUID = null;
-                currentUsername = null;
-                currentUserIsAdmin = false;
-                
-                // Show guest message
-                const guestMessage = document.getElementById('guest-chat-message');
-                if (guestMessage) {
-                    guestMessage.style.display = 'block';
-                }
-            }
-        }).then(() => {
-            // Initialize chat functionality
-            initializeChatRooms();
-            setupEventListeners();
-            
-            // Initialize global room cleanup
-            ChatCleanup.initGlobalCleanup(db);
-        });
-
-        // Initialize chat rooms
-        function initializeChatRooms() {
-            console.log('Initializing chat rooms...');
-            loadChatRooms();
-        }
-
-        // Load chat rooms
-        function loadChatRooms() {
-            const chatRoomsGrid = document.getElementById('chat-rooms-grid');
-            const emptyState = document.getElementById('empty-state');
-            const activeRoomsCount = document.getElementById('active-rooms-count');
-            const totalUsersCount = document.getElementById('total-users-count');
-
-            db.ref('chatRooms').on('value', (snapshot) => {
-                console.log('Chat rooms snapshot received:', snapshot.exists());
-                chatRoomsGrid.innerHTML = '';
-                
-                if (snapshot.exists()) {
-                    let roomCount = 0;
-                    let totalUsers = 0;
-                    
-                    // Add expiry notice at the top
-                    ChatCleanup.addRoomExpiryNotice(chatRoomsGrid);
-                    
-                    snapshot.forEach((roomSnapshot) => {
-                        const roomData = roomSnapshot.val();
-                        const roomId = roomSnapshot.key;
-                        
-                        // Count active users in this room
-                        const activeUsers = roomData.activeUsers ? Object.keys(roomData.activeUsers).length : 0;
-                        totalUsers += activeUsers;
-                        roomCount++;
-                        
-                        const roomElement = createChatRoomElement(roomId, roomData, activeUsers);
-                        chatRoomsGrid.appendChild(roomElement);
-                    });
-                    
-                    activeRoomsCount.textContent = roomCount;
-                    totalUsersCount.textContent = totalUsers;
-                    emptyState.style.display = 'none';
-                } else {
-                    console.log('No chat rooms found');
-                    activeRoomsCount.textContent = '0';
-                    totalUsersCount.textContent = '0';
-                    emptyState.style.display = 'block';
-                }
-            }, (error) => {
-                console.error('Error loading chat rooms:', error);
-                chatRoomsGrid.innerHTML = '<p>Error loading chat rooms. Please refresh the page.</p>';
-            });
-        }
-
-        // Create chat room element
-        function createChatRoomElement(roomId, roomData, activeUsers) {
-            const div = document.createElement('div');
-            div.className = 'chat-room-card';
-            div.dataset.roomId = roomId;
-            
-            const topic = roomData.topic || 'Untitled Chat';
-            const creator = roomData.createdBy || 'Unknown';
-            const createdAt = roomData.createdAt ? new Date(roomData.createdAt).toLocaleString() : 'Unknown';
-            const lastActivity = roomData.lastActivity || roomData.createdAt || Date.now();
-            const lastActivityFormatted = new Date(lastActivity).toLocaleString();
-            
-            // Check if room is near expiry
-            const isNearExpiry = ChatCleanup.isRoomNearExpiry(lastActivity);
-            const timeUntilExpiry = ChatCleanup.getTimeUntilExpiry(lastActivity);
-            
-            let expiryWarning = '';
-            if (isNearExpiry && timeUntilExpiry !== 'Expired') {
-                expiryWarning = `<div class="room-expiry-badge">⚠️ Expires in ${timeUntilExpiry}</div>`;
-            }
-            
-            div.innerHTML = `
-                <div class="room-header">
-                    <h3 class="room-topic">${topic}</h3>
-                    <div class="room-users-badge">${activeUsers} users</div>
-                </div>
-                ${expiryWarning}
-                <div class="room-meta">
-                    <p>Created by: <strong>${creator}</strong></p>
-                    <p>Last activity: ${lastActivityFormatted}</p>
-                </div>
-                <div class="room-actions">
-                    <button class="join-room-btn" onclick="joinChatRoom('${roomId}', '${topic}')">
-                        ${AuthUtils.canWrite() ? 'Join Room' : 'View Room'}
-                    </button>
-                </div>
-            `;
-            
-            return div;
-        }
-
-        // Join chat room
-        function joinChatRoom(roomId, topic) {
-            console.log(`Joining chat room: ${roomId} - ${topic}`);
-            
-            if (!AuthUtils.canWrite()) {
-                // Guest user - show read-only view
-                showMessage('info', 'Sign in to participate in chat rooms. You can view messages but cannot send them.');
-                showChatRoomReadOnly(roomId, topic);
-                return;
-            }
-
-            // Authenticated user - full functionality
-            currentChatRoom = roomId;
-            
-            // Add user to active users list
-            const userRef = db.ref(`chatRooms/${roomId}/activeUsers/${currentUserUID}`);
-            userRef.set({
-                username: currentUsername,
-                joinedAt: firebase.database.ServerValue.TIMESTAMP
-            }).then(() => {
-                console.log('Successfully added user to room');
-                
-                // Update room activity (don't let this block the room join)
-                ChatCleanup.updateRoomActivity(roomId, db, firebase).finally(() => {
-                    // Show the chat room view regardless of activity update result
-                    showChatRoomView(roomId, topic);
-                });
-                
-            }).catch((error) => {
-                console.error('Error joining room:', error);
-                showMessage('error', 'Failed to join room. Please try again.');
-            });
-        }
-
-        // Show chat room view (for authenticated users)
-        function showChatRoomView(roomId, topic) {
-            document.getElementById('chat-rooms-view').style.display = 'none';
-            document.getElementById('chat-room-view').style.display = 'block';
-            document.getElementById('current-room-topic').textContent = topic;
-            
-            loadChatRoomData(roomId);
-            setupMessageListener(roomId);
-            setupUsersListener(roomId);
-            
-            const messageInput = document.getElementById('chat-message-input');
-            if (messageInput) {
-                messageInput.focus();
-            }
-        }
-
-        // Show read-only chat room view (for guests)
-        function showChatRoomReadOnly(roomId, topic) {
-            document.getElementById('chat-rooms-view').style.display = 'none';
-            document.getElementById('chat-room-view').style.display = 'block';
-            document.getElementById('current-room-topic').textContent = topic;
-            
-            loadChatRoomData(roomId);
-            setupMessageListener(roomId);
-            setupUsersListener(roomId);
-            
-            // Show guest system message
-            const messagesContainer = document.getElementById('chat-messages');
-            const guestSystemMessage = document.createElement('div');
-            guestSystemMessage.className = 'system-message guest-system-message';
-            guestSystemMessage.innerHTML = `
-                <div class="system-message-content">
-                    <span class="system-icon">👀</span>
-                    <span>You're viewing this chat as a guest. <a href="login">Sign in</a> to participate and see new messages as they arrive.</span>
-                </div>
-            `;
-            messagesContainer.appendChild(guestSystemMessage);
-        }
-
-        // Load chat room data
-        function loadChatRoomData(roomId) {
-            db.ref(`chatRooms/${roomId}`).once('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const roomData = snapshot.val();
-                    document.getElementById('room-creator').textContent = roomData.createdBy || 'Unknown';
-                    
-                    // Check and show expiry warning
-                    const lastActivity = roomData.lastActivity || roomData.createdAt || Date.now();
-                    const isNearExpiry = ChatCleanup.isRoomNearExpiry(lastActivity);
-                    const timeUntilExpiry = ChatCleanup.getTimeUntilExpiry(lastActivity);
-                    
-                    const expiryWarning = document.getElementById('room-expiry-warning');
-                    if (isNearExpiry && timeUntilExpiry !== 'Expired') {
-                        expiryWarning.textContent = `⚠️ Room expires in ${timeUntilExpiry}`;
-                        expiryWarning.style.display = 'inline';
-                    } else {
-                        expiryWarning.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        // Setup message listener (only shows messages after joining)
-        function setupMessageListener(roomId) {
-            const messagesContainer = document.getElementById('chat-messages');
-            
-            // Clear existing listener
-            if (messageListener) {
-                messageListener.off();
-            }
-            
-            // Clear all messages except welcome message
-            const welcomeMessage = messagesContainer.querySelector('.welcome-message');
-            messagesContainer.innerHTML = '';
-            if (welcomeMessage) {
-                messagesContainer.appendChild(welcomeMessage);
-            }
-            
-            // Get current timestamp as the "join time"
-            const joinTime = Date.now();
-            console.log(`User joined room at: ${new Date(joinTime).toLocaleString()}`);
-            
-            // Only listen for messages with timestamp greater than join time
-            messageListener = db.ref(`chatRooms/${roomId}/messages`).orderByChild('timestamp').startAt(joinTime);
-            
-            messageListener.on('child_added', (snapshot) => {
-                const messageData = snapshot.val();
-                
-                // Double-check that this message was sent after we joined
-                if (messageData.timestamp && messageData.timestamp >= joinTime) {
-                    console.log('New message received:', messageData);
-                    const messageElement = createMessageElement(messageData);
-                    messagesContainer.appendChild(messageElement);
-                    
-                    // Scroll to bottom
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    
-                    // Add a subtle animation for new messages
-                    messageElement.style.opacity = '0';
-                    messageElement.style.transform = 'translateY(10px)';
-                    setTimeout(() => {
-                        messageElement.style.transition = 'all 0.3s ease';
-                        messageElement.style.opacity = '1';
-                        messageElement.style.transform = 'translateY(0)';
-                    }, 50);
-                }
-            });
-            
-            // Show a system message indicating live chat has started
-            if (AuthUtils.canWrite()) {
-                const systemMessage = document.createElement('div');
-                systemMessage.className = 'system-message';
-                systemMessage.innerHTML = `
-                    <div class="system-message-content">
-                        <span class="system-icon">🔴</span>
-                        <span>You joined the live chat. You'll see new messages as they arrive.</span>
-                    </div>
-                `;
-                messagesContainer.appendChild(systemMessage);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-        }
-
-        // Setup users listener
-        function setupUsersListener(roomId) {
-            if (usersListener) {
-                usersListener.off();
-            }
-            
-            usersListener = db.ref(`chatRooms/${roomId}/activeUsers`);
-            usersListener.on('value', (snapshot) => {
-                const userCount = snapshot.exists() ? snapshot.numChildren() : 0;
-                const userCountEl = document.getElementById('room-users-count');
-                if (userCountEl) {
-                    userCountEl.textContent = userCount;
-                }
-            });
-        }
-
-        // Create message element
-        function createMessageElement(messageData) {
-            const div = document.createElement('div');
-            div.className = 'chat-message';
-            
-            const isOwnMessage = messageData.uid === currentUserUID;
-            if (isOwnMessage) {
-                div.classList.add('own-message');
-            }
-            
-            // Format timestamp as HH:MM only
-            const timestamp = messageData.timestamp ? 
-                new Date(messageData.timestamp).toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
-                    minute: '2-digit',
-                    hour12: false 
-                }) : '';
-            
-            const username = messageData.username || 'Anonymous';
-            const content = messageData.content || '';
-            
-            div.innerHTML = `
-                <div class="message-username-header">${username}</div>
-                <div class="message-content">${content}</div>
-                <div class="message-timestamp">${timestamp}</div>
-            `;
-            
-            return div;
-        }
-
-        // Send message
-        function sendMessage() {
-            if (!AuthUtils.canWrite() || !currentChatRoom) {
-                return;
-            }
-            
-            const messageInput = document.getElementById('chat-message-input');
-            const message = messageInput.value.trim();
-            
-            if (!message) {
-                return;
-            }
-            
-            const messageData = {
-                content: message,
-                uid: currentUserUID,
-                username: currentUsername,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            };
-            
-            db.ref(`chatRooms/${currentChatRoom}/messages`).push(messageData).then(() => {
-                messageInput.value = '';
-                updateCharCount();
-                
-                // Update room activity
-                ChatCleanup.updateRoomActivity(currentChatRoom, db, firebase);
-            }).catch((error) => {
-                console.error('Error sending message:', error);
-                showMessage('error', 'Failed to send message. Please try again.');
-            });
-        }
-
-        // Create new chat room
-        function createNewChatRoom(topic) {
-            if (!AuthUtils.canWrite()) {
-                showMessage('error', 'You must be signed in to create chat rooms.');
-                return;
-            }
-            
-            const roomData = {
-                topic: topic,
-                createdBy: currentUsername,
-                createdAt: firebase.database.ServerValue.TIMESTAMP,
-                lastActivity: firebase.database.ServerValue.TIMESTAMP
-            };
-            
-            db.ref('chatRooms').push(roomData).then((ref) => {
-                console.log('Chat room created:', ref.key);
-                closeNewChatModal();
-                joinChatRoom(ref.key, topic);
-            }).catch((error) => {
-                console.error('Error creating chat room:', error);
-                showMessage('error', 'Failed to create chat room. Please try again.');
-            });
-        }
-
-        // Leave chat room
-        function leaveChatRoom() {
-            if (currentChatRoom && currentUserUID) {
-                db.ref(`chatRooms/${currentChatRoom}/activeUsers/${currentUserUID}`).remove();
-            }
-            
-            // Clear listeners
-            if (messageListener) {
-                messageListener.off();
-                messageListener = null;
-            }
-            if (usersListener) {
-                usersListener.off();
-                usersListener = null;
-            }
-            
-            currentChatRoom = null;
-            
-            document.getElementById('chat-room-view').style.display = 'none';
-            document.getElementById('chat-rooms-view').style.display = 'block';
-        }
-
-        // Update character count
-        function updateCharCount() {
-            const messageInput = document.getElementById('chat-message-input');
-            const charCount = document.getElementById('char-count');
-            
-            if (messageInput && charCount) {
-                charCount.textContent = messageInput.value.length;
-            }
-        }
-
-        // Show/hide new chat modal
-        function showNewChatModal() {
-            document.getElementById('new-chat-modal').style.display = 'flex';
-            document.getElementById('chat-topic').focus();
-        }
-
-        function closeNewChatModal() {
-            document.getElementById('new-chat-modal').style.display = 'none';
-            document.getElementById('chat-topic').value = '';
-        }
-
-        // Show message
-        function showMessage(type, text) {
-            const messageContainer = document.getElementById('message-container');
-            messageContainer.className = `message-container ${type}-message`;
-            messageContainer.textContent = text;
-            messageContainer.style.display = 'block';
-            setTimeout(() => {
-                messageContainer.style.display = 'none';
-            }, 5000);
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // New chat button
-            const newChatBtn = document.getElementById('new-chat-btn');
-            if (newChatBtn) {
-                newChatBtn.addEventListener('click', showNewChatModal);
-            }
-
-            // Modal controls
-            const closeModalBtn = document.getElementById('close-modal-btn');
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', closeNewChatModal);
-            }
-
-            // New chat form
-            const newChatForm = document.getElementById('new-chat-form');
-            if (newChatForm) {
-                newChatForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const topic = document.getElementById('chat-topic').value.trim();
-                    if (topic) {
-                        createNewChatRoom(topic);
-                    }
-                });
-            }
-
-            // Back to rooms button
-            const backToRoomsBtn = document.getElementById('back-to-rooms-btn');
-            if (backToRoomsBtn) {
-                backToRoomsBtn.addEventListener('click', leaveChatRoom);
-            }
-
-            // Leave room button
-            const leaveRoomBtn = document.getElementById('leave-room-btn');
-            if (leaveRoomBtn) {
-                leaveRoomBtn.addEventListener('click', leaveChatRoom);
-            }
-
-            // Send message button
-            const sendMessageBtn = document.getElementById('send-message-btn');
-            if (sendMessageBtn) {
-                sendMessageBtn.addEventListener('click', sendMessage);
-            }
-
-            // Message input
-            const messageInput = document.getElementById('chat-message-input');
-            if (messageInput) {
-                messageInput.addEventListener('input', updateCharCount);
-                messageInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        sendMessage();
-                    }
-                });
-            }
-
-            // Mobile menu
-            const openBtn = document.getElementById('menu-open-button');
-            const closeBtn = document.getElementById('menu-close-button');
-            const navMenu = document.querySelector('.nav-menu');
-            if (openBtn && closeBtn && navMenu) {
-                openBtn.addEventListener('click', () => navMenu.classList.add('active'));
-                closeBtn.addEventListener('click', () => navMenu.classList.remove('active'));
-            }
-
-            // Modal click outside to close
-            const modal = document.getElementById('new-chat-modal');
-            if (modal) {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        closeNewChatModal();
-                    }
-                });
-            }
-
-            // Logout button
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', () => {
-                    if (AuthUtils.canWrite()) {
-                        // Leave current room before logout
-                        if (currentChatRoom) {
-                            leaveChatRoom();
-                        }
-                        auth.signOut().then(() => {
-                            window.location.href = 'login';
-                        }).catch((error) => {
-                            console.error('Logout error:', error);
-                        });
-                    } else {
-                        window.location.href = 'login';
-                    }
-                });
-            }
-        }
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (currentChatRoom && currentUserUID) {
-                db.ref(`chatRooms/${currentChatRoom}/activeUsers/${currentUserUID}`).remove();
-            }
-            
-            // Stop global cleanup
-            ChatCleanup.stopGlobalCleanup();
-        });
-    </script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="/assets/js/firebase-config.js"></script>
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/pages/livechat.js"></script>
 </body>
 </html>

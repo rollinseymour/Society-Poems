@@ -9,7 +9,7 @@
         ".read": true,
         "$topic": {
           "$postId": {
-            ".write": "auth != null && (!data.exists() || data.child('uid').val() == auth.uid)",
+            ".write": "auth != null && (!data.exists() || data.child('uid').val() == auth.uid || auth.uid == 'SAD2VGjLrtVA80Cg0ay71rDiijQ2')",
             ".validate": "newData.hasChildren(['content', 'name', 'timestamp', 'uid']) && newData.child('content').isString() && newData.child('name').isString() && newData.child('uid').val() == auth.uid"
           }
         }
@@ -20,9 +20,11 @@
         ".read": true,
         "$topic": {
           "$postId": {
+            // Admin may clear an entire post's interactions when moderating
+            ".write": "auth != null && auth.uid == 'SAD2VGjLrtVA80Cg0ay71rDiijQ2'",
             "comments": {
               "$commentId": {
-                ".write": "auth != null && (!data.exists() || data.child('uid').val() == auth.uid)",
+                ".write": "auth != null && (!data.exists() || data.child('uid').val() == auth.uid || auth.uid == 'SAD2VGjLrtVA80Cg0ay71rDiijQ2')",
                 ".validate": "newData.hasChildren(['content', 'uid', 'username', 'timestamp']) && newData.child('content').isString() && newData.child('uid').val() == auth.uid"
               }
             },
@@ -30,6 +32,15 @@
               "$userId": {
                 ".write": "auth != null && auth.uid == $userId",
                 ".validate": "newData.hasChildren(['username', 'timestamp']) && newData.child('username').isString()"
+              }
+            },
+
+            "reactions": {
+              "$type": {
+                "$userId": {
+                  ".write": "auth != null && auth.uid == $userId",
+                  ".validate": "newData.hasChildren(['username', 'timestamp']) && newData.child('username').isString()"
+                }
               }
             }
           }

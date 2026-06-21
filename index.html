@@ -7,15 +7,11 @@
   <meta name="description" content="Society Poems is a warm, global peer-support community for sharing the stories of your life — and finding people who understand. Write openly, anonymously or named." />
   <link rel="icon" href="/Images/Untitled1.png" />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Design system -->
   <link rel="stylesheet" href="/assets/css/main.css" />
 
-  <!-- Set theme before paint to avoid a flash -->
   <script>
     (function () {
       try {
@@ -26,55 +22,12 @@
     })();
   </script>
 </head>
-<body>
+<body data-page="home">
   <a class="skip-link" href="#main">Skip to content</a>
-
-  <!-- ============ Header ============ -->
-  <header class="site-header">
-    <div class="container nav">
-      <a href="/" class="brand" aria-label="Society Poems home">
-        <span class="brand-name">
-          <svg class="brand-mark" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v16H5.5A2.5 2.5 0 0 0 3 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-            <path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H13v16h5.5A2.5 2.5 0 0 1 21 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-          </svg>
-          Society Poems
-        </span>
-        <span class="brand-tagline">Society's Stories</span>
-      </a>
-
-      <ul class="nav-links" id="nav-links">
-        <li><a href="/" class="active">Home</a></li>
-        <li><a href="read">Read</a></li>
-        <li><a href="upload">Share</a></li>
-        <li><a href="livechat">Live Circles</a></li>
-        <li><a href="#values">About</a></li>
-        <li class="nav-mobile-cta" style="margin-top:1rem;"><a href="login" class="btn btn-primary btn-block">Sign in</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <a href="login" class="btn btn-ghost btn-sm nav-desktop-cta">Sign in</a>
-        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch to dark mode">
-          <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.7"/>
-            <path d="M12 2.5v2.4M12 19.1v2.4M21.5 12h-2.4M4.9 12H2.5M18.7 5.3l-1.7 1.7M7 17l-1.7 1.7M18.7 18.7 17 17M7 7 5.3 5.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-          </svg>
-          <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M20 14.4A8 8 0 1 1 9.6 4a6.4 6.4 0 0 0 10.4 10.4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button id="nav-toggle" class="icon-btn nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </header>
-  <div class="nav-backdrop" id="nav-backdrop"></div>
+  <div id="site-header"></div>
 
   <main id="main">
-    <!-- ============ Hero ============ -->
+    <!-- Hero -->
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy">
@@ -116,9 +69,7 @@
             <span class="topic-badge sage">Gratitude</span>
             <p>“A letter to my younger self: you make it through. I promise you make it through.”</p>
             <div class="fc-foot">
-              <span class="reactions">
-                <span class="rx">❤ 124</span><span class="rx">🤝 58</span>
-              </span>
+              <span class="reactions"><span class="rx">❤ 124</span><span class="rx">🤝 58</span></span>
             </div>
           </article>
           <article class="float-card three">
@@ -129,7 +80,7 @@
       </div>
     </section>
 
-    <!-- ============ Value cards ============ -->
+    <!-- Value cards -->
     <section class="section">
       <div class="container">
         <div class="section-head">
@@ -172,7 +123,7 @@
       </div>
     </section>
 
-    <!-- ============ Values / safe-space band ============ -->
+    <!-- Values / safe-space band -->
     <section class="values-band section" id="values">
       <div class="container">
         <div class="section-head">
@@ -201,8 +152,7 @@
       </div>
     </section>
 
-    <!-- ============ Recent stories preview ============ -->
-    <!-- NOTE: sample content for the redesign preview — will be wired to live posts during rollout. -->
+    <!-- Recent stories preview (sample content — wired to live posts during rollout) -->
     <section class="section">
       <div class="container">
         <div class="section-head">
@@ -210,7 +160,7 @@
           <h2 class="section-title">Recent stories</h2>
           <p class="lead">A glimpse of what people are sharing right now.</p>
         </div>
-        <div class="grid-3">
+        <div class="grid-3" id="recent-stories">
           <a href="read" class="story-card">
             <span class="topic-badge">Healing</span>
             <h3>The slow climb back to myself</h3>
@@ -245,7 +195,7 @@
       </div>
     </section>
 
-    <!-- ============ Resources / safety strip ============ -->
+    <!-- Resources / safety strip -->
     <section class="resources-strip">
       <div class="container inner">
         <span class="heart" aria-hidden="true">
@@ -256,7 +206,7 @@
       </div>
     </section>
 
-    <!-- ============ CTA band ============ -->
+    <!-- CTA band -->
     <section class="section">
       <div class="container">
         <div class="cta-band">
@@ -265,53 +215,56 @@
           <p class="lead">Start with a sentence. Start anonymously. Just start — the community is here to listen.</p>
           <div class="hero-cta">
             <a href="upload" class="btn btn-primary btn-lg">Share your story</a>
-            <a href="login" class="btn btn-ghost btn-lg">Create a free account</a>
+            <a href="login" class="btn btn-ghost btn-lg" data-auth="guest">Create a free account</a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- ============ Footer ============ -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <span class="brand-name">
-            <svg class="brand-mark" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v16H5.5A2.5 2.5 0 0 0 3 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-              <path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H13v16h5.5A2.5 2.5 0 0 1 21 21.5V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-            </svg>
-            Society Poems
-          </span>
-          <p>A warm, global space to share the stories of your life and find support from people who understand. Society's Stories — written by all of us.</p>
-        </div>
-        <div class="footer-col">
-          <h4>Explore</h4>
-          <a href="read">Read stories</a>
-          <a href="upload">Share yours</a>
-          <a href="livechat">Live Circles</a>
-          <a href="#values">Our values</a>
-        </div>
-        <div class="footer-col">
-          <h4>Support</h4>
-          <a href="resources">Get help now</a>
-          <a href="feedback">Send feedback</a>
-          <a href="login">Sign in</a>
-        </div>
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <a href="privacy-policy">Privacy Policy</a>
-          <a href="tos">Terms of Service</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; 2026 Society Poems · Society's Stories</span>
-        <span>Made with care for people sharing their stories.</span>
-      </div>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
-  <script src="/assets/js/theme.js"></script>
+  <!-- Firebase + shared shell -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="/assets/js/firebase-config.js"></script>
+  <script src="/assets/js/shell.js"></script>
+  <script>
+    // Populate "Recent stories" with the newest real posts (falls back to samples).
+    (function () {
+      var db = window.SP && window.SP.db;
+      if (!db) return;
+      function ck(o) { return o ? Object.keys(o).length : 0; }
+      Promise.all([db.ref("uploads").once("value"), db.ref("interactions").once("value")])
+        .then(function (res) {
+          var up = res[0].val() || {}, ix = res[1].val() || {}, posts = [];
+          Object.keys(up).forEach(function (t) {
+            Object.keys(up[t] || {}).forEach(function (id) {
+              var p = up[t][id];
+              if (!p || !p.content) return;
+              var i = (ix[t] && ix[t][id]) || {}, rx = i.reactions || {};
+              posts.push({ t: t, id: id, name: p.name || "Anonymous", content: p.content,
+                ts: p.timestamp || 0, hearts: ck(i.likes), support: ck(rx.support), cw: p.cw });
+            });
+          });
+          if (!posts.length) return;
+          posts.sort(function (a, b) { return b.ts - a.ts; });
+          var esc = window.SP.escapeHTML, ini = window.SP.initials;
+          document.getElementById("recent-stories").innerHTML = posts.slice(0, 3).map(function (p) {
+            var title = p.t.charAt(0).toUpperCase() + p.t.slice(1);
+            var body = p.cw ? "Contains a content warning — open to read."
+              : esc(p.content.slice(0, 150)) + (p.content.length > 150 ? "…" : "");
+            return '<a href="post?topic=' + encodeURIComponent(p.t) + "&postId=" + encodeURIComponent(p.id) +
+              '" class="story-card"><span class="topic-badge' + (p.cw ? " warn" : "") + '">' + esc(title) +
+              '</span><p class="excerpt" style="margin-top:.9rem;">' + body + '</p>' +
+              '<div class="story-foot"><span class="author"><span class="avatar">' + ini(p.name) +
+              "</span> " + esc(p.name) + '</span><span class="reactions"><span class="rx">❤ ' + p.hearts +
+              '</span><span class="rx">🤝 ' + p.support + "</span></span></div></a>";
+          }).join("");
+        })
+        .catch(function () {});
+    })();
+  </script>
 </body>
 </html>
