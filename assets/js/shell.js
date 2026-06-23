@@ -111,11 +111,13 @@
   function wireLogout() {
     document.querySelectorAll('[data-action="logout"]').forEach(function (btn) {
       btn.addEventListener("click", function () {
+        loggingOut = true; // stop requireAuth on protected pages from racing us to /login
         try {
           localStorage.setItem("sp-auth-hint", "guest");
           localStorage.removeItem("sp-auth-initials");
         } catch (e) {}
         if (SP.auth) SP.auth.signOut().then(function () { window.location.href = "/"; });
+        else window.location.href = "/";
       });
     });
   }
@@ -134,6 +136,16 @@
   }
 
   /* --------------------------------------------------------- auth flows */
+  var loggingOut = false;
+
+  // Build a login URL that remembers where the user was headed, so we can
+  // send them back after they sign in.
+  function loginUrl() {
+    var next = (location.pathname || "").replace(/^\//, "") + (location.search || "");
+    if (!next || next.indexOf("login") === 0) return "login";
+    return "login?next=" + encodeURIComponent(next);
+  }
+
   function fetchProfile(uid) {
     if (!SP.db) return Promise.resolve(null);
     return SP.db.ref("users/" + uid).once("value")
@@ -156,9 +168,13 @@
   SP.requireAuth = function (cb) {
     if (!SP.auth) return;
     SP.auth.onAuthStateChanged(function (user) {
-      if (!user) { window.location.href = "login"; return; }
+      if (!user) {
+        if (loggingOut) return; // an intentional logout handles its own redirect
+        window.location.href = loginUrl();
+        return;
+      }
       fetchProfile(user.uid).then(function (profile) {
-        if (!profile || !profile.username) { window.location.href = "login"; return; }
+        if (!profile || !profile.username) { window.location.href = loginUrl(); return; }
         applyAuthVisibility(user);
         setAvatar(profile, user);
         document.body.classList.add("ready");

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=3" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=4" />
   <script>
     (function () {
       try {
@@ -137,7 +137,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="/assets/js/firebase-config.js?v=3"></script>
+  <script src="/assets/js/firebase-config.js?v=4"></script>
   <script>
     (function () {
       "use strict";
@@ -145,6 +145,16 @@
       var db = window.SP.db;
       var googleProvider = new firebase.auth.GoogleAuthProvider();
       googleProvider.setCustomParameters({ prompt: "select_account" });
+
+      // Where to go after a successful sign-in: a same-origin "next" page if one
+      // was passed (e.g. the user was bounced here from a protected page), else home.
+      function dest() {
+        try {
+          var n = new URLSearchParams(location.search).get("next");
+          if (n && !/^https?:/i.test(n) && n.indexOf("//") !== 0 && n.indexOf("login") !== 0) return n;
+        } catch (e) {}
+        return "/";
+      }
 
       var views = {
         login: document.getElementById("login-view"),
@@ -207,7 +217,7 @@
           return db.ref("users/" + result.user.uid).once("value").then(function (snap) {
             if (snap.exists() && snap.val().username) {
               msg(currentMsg(), "success", "Welcome back! Redirecting…");
-              setTimeout(function () { window.location.href = "/"; }, 1200);
+              setTimeout(function () { window.location.href = dest(); }, 1200);
             } else {
               show("username");
             }
@@ -247,7 +257,7 @@
             return db.ref("users/" + cred.user.uid).once("value").then(function (snap) {
               if (snap.exists() && snap.val().username) {
                 msg("login-msg", "success", "Welcome back! Redirecting…");
-                setTimeout(function () { window.location.href = "/"; }, 1200);
+                setTimeout(function () { window.location.href = dest(); }, 1200);
               } else {
                 show("username");
               }
@@ -301,7 +311,7 @@
           })
           .then(function () {
             msg("signup-msg", "success", "Welcome to Society Poems! Redirecting…");
-            setTimeout(function () { window.location.href = "/"; }, 1500);
+            setTimeout(function () { window.location.href = dest(); }, 1500);
           })
           .catch(function (error) {
             var m = "Account creation failed. Please try again.";
@@ -338,7 +348,7 @@
           .then(function () { return db.ref("usernames/" + username.toLowerCase()).set(user.uid); })
           .then(function () {
             msg("username-msg", "success", "All set! Redirecting…");
-            setTimeout(function () { window.location.href = "/"; }, 1200);
+            setTimeout(function () { window.location.href = dest(); }, 1200);
           })
           .catch(function (error) {
             var m = "Could not save username. Please try again.";
@@ -353,7 +363,7 @@
         if (user) {
           db.ref("users/" + user.uid).once("value").then(function (snap) {
             if (snap.exists() && snap.val().username) {
-              window.location.href = "/";
+              window.location.href = dest();
             } else {
               show("username");
             }
