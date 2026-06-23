@@ -15,7 +15,35 @@
 </head>
 <body data-page="">
   <a class="skip-link" href="#main">Skip to content</a>
-  <div id="site-header"></div>
+  <header class="site-header"><div class="container nav">
+    <a href="/" class="brand" aria-label="Society Poems home">
+      <span class="brand-name"><span class="brand-logo" aria-hidden="true"></span> Society Poems</span>
+      <span class="brand-tagline">Society’s Stories</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/" data-nav="home">Home</a></li>
+      <li><a href="read" data-nav="read">Read</a></li>
+      <li><a href="upload" data-nav="upload">Share</a></li>
+      <li><a href="livechat" data-nav="livechat">Live Circles</a></li>
+      <li><a href="resources" data-nav="resources">Get help</a></li>
+      <li data-auth="user"><a href="profile" data-nav="profile">Profile</a></li>
+      <li class="nav-mobile-cta" data-auth="guest" style="margin-top:1rem;"><a href="login" class="btn btn-primary btn-block">Sign in</a></li>
+      <li class="nav-mobile-cta" data-auth="user" style="margin-top:1rem;"><button type="button" class="btn btn-ghost btn-block" data-action="logout">Log out</button></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login" class="btn btn-ghost btn-sm nav-desktop-cta" data-auth="guest">Sign in</a>
+      <a href="profile" class="avatar nav-desktop-cta" data-auth="user" id="nav-avatar" title="Your profile" style="text-decoration:none;">?</a>
+      <button type="button" class="btn btn-ghost btn-sm nav-desktop-cta" data-auth="user" data-action="logout">Log out</button>
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch theme">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.5v2.4M12 19.1v2.4M21.5 12h-2.4M4.9 12H2.5M18.7 5.3l-1.7 1.7M7 17l-1.7 1.7M18.7 18.7 17 17M7 7 5.3 5.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.4A8 8 0 1 1 9.6 4a6.4 6.4 0 0 0 10.4 10.4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </button>
+      <button id="nav-toggle" class="icon-btn nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div></header>
+  <div class="nav-backdrop" id="nav-backdrop"></div>
 
   <main id="main" class="section">
     <div class="container prose">
@@ -67,7 +95,16 @@
     </div>
   </main>
 
-  <div id="site-footer"></div>
+  <footer class="site-footer"><div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><span class="brand-name"><span class="brand-logo" aria-hidden="true"></span> Society Poems</span>
+        <p>A warm, global space to share the stories of your life and find support from people who understand. Society’s Stories — written by all of us.</p></div>
+      <div class="footer-col"><h4>Explore</h4><a href="read">Read stories</a><a href="upload">Share yours</a><a href="livechat">Live Circles</a></div>
+      <div class="footer-col"><h4>Support</h4><a href="resources">Get help now</a><a href="feedback">Send feedback</a><a href="login" data-auth="guest">Sign in</a><a href="profile" data-auth="user">Your profile</a></div>
+      <div class="footer-col"><h4>Legal</h4><a href="privacy-policy">Privacy Policy</a><a href="tos">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 Society Poems · Society’s Stories</span><span>Made with care for people sharing their stories.</span></div>
+  </div></footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>

@@ -6,8 +6,8 @@ name: Clean Up Orphaned Database Users
 on:
   workflow_dispatch: # Allows you to run this manually from the Actions tab
   schedule:
-    # Runs automatically on your chosen schedule.
-    - cron: '* */12 * * *'
+    # Runs every 12 hours (at minute 0 of hours 0 and 12 UTC).
+    - cron: '0 */12 * * *'
 
 jobs:
   cleanup:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       # Corrected Step:
       # `cd` all the way to UserManagement directory.
