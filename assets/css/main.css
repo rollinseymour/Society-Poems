@@ -359,7 +359,13 @@ main {
   font-size: 0.96rem;
 }
 .nav-links a:hover,
-.nav-links a.active {
+.nav-links a.active,
+body[data-page="home"] .nav-links a[data-nav="home"],
+body[data-page="read"] .nav-links a[data-nav="read"],
+body[data-page="upload"] .nav-links a[data-nav="upload"],
+body[data-page="livechat"] .nav-links a[data-nav="livechat"],
+body[data-page="resources"] .nav-links a[data-nav="resources"],
+body[data-page="profile"] .nav-links a[data-nav="profile"] {
   color: var(--ink);
   background: var(--surface-2);
 }
@@ -401,9 +407,12 @@ main {
   display: none; /* in-drawer Sign in — shown on mobile only */
 }
 
-/* Static header ships with both guest + logged-in controls; hide the
-   logged-in ones until auth resolves so they don't flash for visitors. */
-body:not(.auth-ready) [data-auth="user"] { display: none !important; }
+/* Auth-aware nav driven by a cached hint set BEFORE paint (in each page's
+   <head>), so the header renders in the correct state immediately and never
+   swaps after load. Default (no hint) = guest view. Showing an element just
+   means NOT hiding it, so it keeps its natural display. */
+html:not([data-auth-hint="user"]) [data-auth="user"] { display: none !important; }
+html[data-auth-hint="user"] [data-auth="guest"] { display: none !important; }
 
 @media (max-width: 860px) {
   .nav-links {

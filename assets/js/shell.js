@@ -70,11 +70,7 @@
   };
 
   /* ----------------------------------------------------------- behavior */
-  function setActive(page) {
-    if (!page) return;
-    var link = document.querySelector('.nav-links a[data-nav="' + page + '"]');
-    if (link) link.classList.add("active");
-  }
+  // (Active nav tab is handled purely in CSS via body[data-page] + a[data-nav].)
 
   function wireTheme() {
     var t = document.getElementById("theme-toggle");
@@ -115,23 +111,26 @@
   function wireLogout() {
     document.querySelectorAll('[data-action="logout"]').forEach(function (btn) {
       btn.addEventListener("click", function () {
+        try {
+          localStorage.setItem("sp-auth-hint", "guest");
+          localStorage.removeItem("sp-auth-initials");
+        } catch (e) {}
         if (SP.auth) SP.auth.signOut().then(function () { window.location.href = "/"; });
       });
     });
   }
 
   function applyAuthVisibility(user) {
-    var state = user ? "user" : "guest";
-    document.querySelectorAll("[data-auth]").forEach(function (el) {
-      el.style.display = el.getAttribute("data-auth") === state ? "" : "none";
-    });
-    document.body.classList.add("auth-ready");
+    var hint = user ? "user" : "guest";
+    document.documentElement.setAttribute("data-auth-hint", hint);
+    try { localStorage.setItem("sp-auth-hint", hint); } catch (e) {}
   }
 
   function setAvatar(profile, user) {
+    var initials = SP.initials((profile && profile.username) || (user && user.email) || "");
+    try { localStorage.setItem("sp-auth-initials", initials); } catch (e) {}
     var av = document.getElementById("nav-avatar");
-    if (!av) return;
-    av.textContent = SP.initials((profile && profile.username) || (user && user.email) || "");
+    if (av) av.textContent = initials;
   }
 
   /* --------------------------------------------------------- auth flows */
@@ -170,11 +169,17 @@
 
   /* -------------------------------------------------------------- boot */
   document.addEventListener("DOMContentLoaded", function () {
-    setActive(document.body.getAttribute("data-page") || "");
+    // The data-auth-hint was already applied pre-paint (in each page's <head>),
+    // so the header is correct from the first frame. Just restore the cached
+    // avatar initials and let SP.observe() reconcile with the real auth state.
+    try {
+      var cachedInitials = localStorage.getItem("sp-auth-initials");
+      var av = document.getElementById("nav-avatar");
+      if (av && cachedInitials) av.textContent = cachedInitials;
+    } catch (e) {}
     wireTheme();
     wireMobile();
     wireLogout();
-    applyAuthVisibility(null); // default to guest view until auth resolves
     if (SP.auth) SP.observe();
   });
 })();
